@@ -1,0 +1,17 @@
+{
+  "name": "izisaurio/innsert-framework",
+  "description": "PHP MVC Framework",
+  "type": "project",
+  "authors": [
+    {
+      "name": "isaac",
+      "email": "izi.isaac@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "innsert\\": "innsert/",
+      "app\\": "app/"
+    }
+  }
+}
