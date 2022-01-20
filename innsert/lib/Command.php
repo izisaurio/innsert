@@ -77,7 +77,12 @@ class Command
 	 */
 	public function runInBackground()
 	{
-		$command = $this->prepend ? Request::defaultInstance()->server('DOCUMENT_ROOT') . DS . 'app' . DS : $this->command;
+		$command = $this->prepend
+			? Request::defaultInstance()->server('DOCUMENT_ROOT') .
+				DS .
+				'app' .
+				DS
+			: $this->command;
 		shell_exec(str_replace('[script]', $command, $this->backgroundCommand));
 	}
 
@@ -88,7 +93,12 @@ class Command
 	 */
 	public function runSequential()
 	{
-		$command = $this->prepend ? Request::defaultInstance()->server('DOCUMENT_ROOT') . DS . 'app' . DS : $this->command;
+		$command = $this->prepend
+			? Request::defaultInstance()->server('DOCUMENT_ROOT') .
+				DS .
+				'app' .
+				DS
+			: $this->command;
 		shell_exec(str_replace('[script]', $command, $this->sequentialCommand));
 	}
 }

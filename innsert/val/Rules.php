@@ -25,7 +25,7 @@ class Rules
 	 */
 	public static function INT($value)
 	{
-		return (ctype_digit($value) || is_int($value));
+		return ctype_digit($value) || is_int($value);
 	}
 
 	/**
@@ -64,7 +64,10 @@ class Rules
 	 */
 	public static function TEXT($value)
 	{
-		return	preg_match("#^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑäëïöüÄËÏÖÜ’ ?!%\+\-,\.;\$¿¡=\:´_\/\\\@\(\)\#'\*|\r\n]+$#", $value);
+		return preg_match(
+			"#^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑäëïöüÄËÏÖÜ’ ?!%\+\-,\.;\$¿¡=\:´_\/\\\@\(\)\#'\*|\r\n]+$#",
+			$value
+		);
 	}
 
 	/**
@@ -90,7 +93,10 @@ class Rules
 	 */
 	public static function DATETIME($value)
 	{
-        return preg_match('#^([123]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))(\s)(?:([01]?\d|2[0-3]):([0-5]?\d):)?([0-5]?\d)$#', $value);
+		return preg_match(
+			'#^([123]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))(\s)(?:([01]?\d|2[0-3]):([0-5]?\d):)?([0-5]?\d)$#',
+			$value
+		);
 	}
 
 	/**
@@ -103,7 +109,10 @@ class Rules
 	 */
 	public static function DATE($value)
 	{
-        return preg_match('#^([123]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$#', $value);
+		return preg_match(
+			'#^([123]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$#',
+			$value
+		);
 	}
 
 	/**
@@ -116,7 +125,10 @@ class Rules
 	 */
 	public static function TIME($value)
 	{
-        return preg_match('#^(?:([01]?\d|2[0-3]):([0-5]?\d):)?([0-5]?\d)$#', $value);
+		return preg_match(
+			'#^(?:([01]?\d|2[0-3]):([0-5]?\d):)?([0-5]?\d)$#',
+			$value
+		);
 	}
 
 	/**
@@ -142,7 +154,11 @@ class Rules
 	 */
 	public static function BOOL($value)
 	{
-		return in_array($value, array(true, false, 1, 0, 'yes', 'no', '1', '0'), true);
+		return in_array(
+			$value,
+			[true, false, 1, 0, 'yes', 'no', '1', '0'],
+			true
+		);
 	}
 
 	/**
@@ -227,7 +243,7 @@ class Rules
 	{
 		return preg_match($regex, $value);
 	}
-	
+
 	/**
 	 * Validates greater than another
 	 *
@@ -253,7 +269,8 @@ class Rules
 	 */
 	public static function GREATERDATE($value, $compare)
 	{
-		return DateTime::createFromFormat('Y-m-d', $value) > DateTime::createFromFormat('Y-m-d', $compare);
+		return DateTime::createFromFormat('Y-m-d', $value) >
+			DateTime::createFromFormat('Y-m-d', $compare);
 	}
 
 	/**
@@ -267,7 +284,8 @@ class Rules
 	 */
 	public static function GREATERDATETIME($value, $compare)
 	{
-		return DateTime::createFromFormat('Y-m-d H:i:s', $value) > DateTime::createFromFormat('Y-m-d H:i:s', $compare);
+		return DateTime::createFromFormat('Y-m-d H:i:s', $value) >
+			DateTime::createFromFormat('Y-m-d H:i:s', $compare);
 	}
 
 	/**
@@ -295,7 +313,8 @@ class Rules
 	 */
 	public static function LESSDATE($value, $compare)
 	{
-		return DateTime::createFromFormat('Y-m-d', $value) < DateTime::createFromFormat('Y-m-d', $compare);
+		return DateTime::createFromFormat('Y-m-d', $value) <
+			DateTime::createFromFormat('Y-m-d', $compare);
 	}
 
 	/**
@@ -309,7 +328,8 @@ class Rules
 	 */
 	public static function LESSDATETIME($value, $compare)
 	{
-		return DateTime::createFromFormat('Y-m-d H:i:s', $value) < DateTime::createFromFormat('Y-m-d H:i:s', $compare);
+		return DateTime::createFromFormat('Y-m-d H:i:s', $value) <
+			DateTime::createFromFormat('Y-m-d H:i:s', $compare);
 	}
 
 	/**

@@ -95,7 +95,9 @@ class Url
 	public function action()
 	{
 		$request = Request::defaultInstance();
-		$this->parts = array_merge($request->router->controller, [$request->router->action]);
+		$this->parts = array_merge($request->router->controller, [
+			$request->router->action,
+		]);
 		return $this;
 	}
 
@@ -158,9 +160,34 @@ class Url
 	public function friendly()
 	{
 		$unwanted = [
-			'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
-			'ñ' => 'n', 'Ñ' => 'N', ' ' => '-', '!' => '', '(' => '', ')' => '', '?' => '', ',' => '', '.' => '', ';' => '', '/' => '',
-			':' => '', '¿' => '', '¡' => '', '=' => '', '’' => '', "'" => '', '"' => ''
+			'á' => 'a',
+			'é' => 'e',
+			'í' => 'i',
+			'ó' => 'o',
+			'ú' => 'u',
+			'Á' => 'A',
+			'É' => 'E',
+			'Í' => 'I',
+			'Ó' => 'O',
+			'Ú' => 'U',
+			'ñ' => 'n',
+			'Ñ' => 'N',
+			' ' => '-',
+			'!' => '',
+			'(' => '',
+			')' => '',
+			'?' => '',
+			',' => '',
+			'.' => '',
+			';' => '',
+			'/' => '',
+			':' => '',
+			'¿' => '',
+			'¡' => '',
+			'=' => '',
+			'’' => '',
+			"'" => '',
+			'"' => '',
 		];
 		foreach ($this->parts as &$part) {
 			$part = strtolower(strtr($part, $unwanted));

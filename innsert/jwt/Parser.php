@@ -2,8 +2,7 @@
 
 namespace innsert\jwt;
 
-use innsert\lib\Base64URL,
-	\stdClass;
+use innsert\lib\Base64URL, \stdClass;
 
 /**
  * Innsert PHP MVC Framework
@@ -20,7 +19,7 @@ class Parser
 	 * Token header
 	 *
 	 * @access	public
-	 * @var		stdClass	
+	 * @var		stdClass
 	 */
 	public $header;
 
@@ -79,7 +78,7 @@ class Parser
 		$this->secret = $secret;
 		list($bearer, $jwt) = explode(' ', $token);
 		$this->hash = $hash;
-		$this->token = new stdClass;
+		$this->token = new stdClass();
 		$this->token->code = $jwt;
 		list($header, $payload, $signature) = explode('.', $jwt);
 		$this->token->header = $header;

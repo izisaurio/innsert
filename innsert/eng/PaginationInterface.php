@@ -1,6 +1,7 @@
 <?php
 
 namespace innsert\eng;
+
 use innsert\db\DBMapper;
 
 /**
@@ -14,19 +15,19 @@ use innsert\db\DBMapper;
  */
 interface PaginationInterface
 {
-    /**
-    * Executes the mapper search
-    *
-    * @access  public
-    * @param   DBMapper    $mapper     DBMapper where the search will be made
-    */
-    public function paginate(DBMapper $mapper);
+	/**
+	 * Executes the mapper search
+	 *
+	 * @access  public
+	 * @param   DBMapper    $mapper     DBMapper where the search will be made
+	 */
+	public function paginate(DBMapper $mapper);
 
-    /**
-     * Returns the result of a serach
-     * 
-     * @access	public
-     * @return	Result
-     */
-    public function result();
+	/**
+	 * Returns the result of a serach
+	 *
+	 * @access	public
+	 * @return	Result
+	 */
+	public function result();
 }

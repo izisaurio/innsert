@@ -31,7 +31,7 @@ class NumericFunctions
 		if (!is_numeric($second)) {
 			throw new ParamTypeException(gettype($second), 'Numeric', 'second');
 		}
-		return (round($first, $decimals) == round($second, $decimals));
+		return round($first, $decimals) == round($second, $decimals);
 	}
 
 	/**
@@ -52,6 +52,6 @@ class NumericFunctions
 		if (!is_numeric($second)) {
 			throw new ParamTypeException(gettype($second), 'Numeric', 'second');
 		}
-		return (round($first, $decimals) > round($second, $decimals));
+		return round($first, $decimals) > round($second, $decimals);
 	}
 }

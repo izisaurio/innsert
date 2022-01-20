@@ -13,13 +13,13 @@ namespace innsert\resp;
  */
 class HeadersOnlyResponse extends Response
 {
-    /**
-     * Response code set to 200 (Ok)
-     * 
-     * @access  public
-     * @var     int
-     */
-    public $code = 200;
+	/**
+	 * Response code set to 200 (Ok)
+	 *
+	 * @access  public
+	 * @var     int
+	 */
+	public $code = 200;
 
 	/**
 	 * Constructor
@@ -32,19 +32,19 @@ class HeadersOnlyResponse extends Response
 	public function __construct(array $headers = [])
 	{
 		parent::__construct();
-        if (!empty($headers)) {
-            $this->headers($headers);
-        }
+		if (!empty($headers)) {
+			$this->headers($headers);
+		}
 	}
-    
-    /**
-    * Sends response
-    *
-    * @access	public
-    */
-   public function send()
-   {
-       $this->writeHeaders();
-       exit;
-   }
+
+	/**
+	 * Sends response
+	 *
+	 * @access	public
+	 */
+	public function send()
+	{
+		$this->writeHeaders();
+		exit();
+	}
 }

@@ -2,8 +2,7 @@
 
 namespace innsert\lang;
 
-use innsert\core\Defaults,
-	innsert\lib\HttpRequest;
+use innsert\core\Defaults, innsert\lib\HttpRequest;
 
 /**
  * Innsert PHP MVC Framework
@@ -69,7 +68,11 @@ class Language
 	 */
 	public function setFromBrowser(HttpRequest $request)
 	{
-		$language = substr($request->server('HTTP_ACCEPT_LANGUAGE', 'none'), 0, 2);
+		$language = substr(
+			$request->server('HTTP_ACCEPT_LANGUAGE', 'none'),
+			0,
+			2
+		);
 		if (in_array($language, Defaults::defaultInstance()['languages'])) {
 			$this->locale = $language;
 		}
@@ -85,16 +88,22 @@ class Language
 	 * @return	string
 	 * @throws	LabelNotFoundException
 	 */
-	public function get($message, array $params = array(), $lang = null)
+	public function get($message, array $params = [], $lang = null)
 	{
-		list($file, $key) = strpos($message, '.') === false ? ['_default', $message] : explode('.', $message);
+		list($file, $key) =
+			strpos($message, '.') === false
+				? ['_default', $message]
+				: explode('.', $message);
 		$labels = $this->loadStorage($file);
 		$locale = isset($lang) ? $lang : $this->locale;
 		if (isset($labels[$key][$locale])) {
 			return $this->format($labels[$key][$locale], $params);
 		}
 		if (isset($labels[$key])) {
-			return $this->format((is_array($labels[$key]) ? $labels[$key][0] : $labels[$key]), $params);
+			return $this->format(
+				is_array($labels[$key]) ? $labels[$key][0] : $labels[$key],
+				$params
+			);
 		}
 		throw new LabelNotFoundException($file, $key, $locale);
 	}
@@ -129,7 +138,7 @@ class Language
 	 * @return	string
 	 * @throws	LabelNotFoundException
 	 */
-	public function getWithLang($message, $lang, array $params = array())
+	public function getWithLang($message, $lang, array $params = [])
 	{
 		return $this->get($message, $params, $lang);
 	}
@@ -142,7 +151,7 @@ class Language
 	 * @param	array	$params		vsprintf params
 	 * @return	string
 	 */
-	protected function format($label, array $params = array())
+	protected function format($label, array $params = [])
 	{
 		return !empty($params) ? vsprintf($label, $params) : $label;
 	}

@@ -137,7 +137,7 @@ class SqlSentence
 	 * @param	array		$rules		Union rules in select
 	 * @return	mixed
 	 */
-	public function select($select, array $rules = array())
+	public function select($select, array $rules = [])
 	{
 		if (!is_array($select)) {
 			$this->select[] = $select;
@@ -146,14 +146,21 @@ class SqlSentence
 		foreach ($select as $key => $column) {
 			if (!is_int($key) && !empty($rules) && isset($rules[$key])) {
 				list($foreignTable, $foreignId) = explode('|', $rules[$key]);
-				$this->addForeignColumns($key, $column, $foreignTable, $foreignId);
+				$this->addForeignColumns(
+					$key,
+					$column,
+					$foreignTable,
+					$foreignId
+				);
 				continue;
 			}
 			if ($column instanceof SqlSentence) {
 				$this->select[] = "({$column->buildSelect()}) AS {$column->alias}";
 				continue;
 			}
-			$this->select[] = is_array($column) ? $column[0] : $this->prepareColumn($column);
+			$this->select[] = is_array($column)
+				? $column[0]
+				: $this->prepareColumn($column);
 		}
 		return $this;
 	}
@@ -168,15 +175,21 @@ class SqlSentence
 	 * @param	string		$foreignId		Foreign table key
 	 * @return	mixed
 	 */
-	protected function addForeignColumns($column, $selects, $foreignTable, $foreignId)
-	{
+	protected function addForeignColumns(
+		$column,
+		$selects,
+		$foreignTable,
+		$foreignId
+	) {
 		if (!is_array($selects)) {
 			$selects = [$selects];
 		}
 		$this->innerJoin($foreignTable, $foreignId, '=', $column);
 		foreach ($selects as $select) {
-			$this->select[] = (strpos($select, ' ') === false) ?
-				"{$foreignTable}.{$select} AS {$column}_{$select}" : "{$foreignTable}.{$select}";
+			$this->select[] =
+				strpos($select, ' ') === false
+					? "{$foreignTable}.{$select} AS {$column}_{$select}"
+					: "{$foreignTable}.{$select}";
 		}
 		return $this;
 	}
@@ -221,7 +234,9 @@ class SqlSentence
 			$operator = '=';
 		}
 		$to = is_array($to) ? $to[0] : $this->quote($to);
-		$compare = is_array($compare) ? $compare[0] : $this->prepareColumn($compare);
+		$compare = is_array($compare)
+			? $compare[0]
+			: $this->prepareColumn($compare);
 		return $this->whereHandler("{$compare} {$operator} {$to}", $type);
 	}
 
@@ -279,12 +294,18 @@ class SqlSentence
 	 * @param	string			$operator	Operator
 	 * @return	mixed
 	 */
-	public function whereIn($compare, array $values, $type = 'AND', $operator = 'IN')
-	{
+	public function whereIn(
+		$compare,
+		array $values,
+		$type = 'AND',
+		$operator = 'IN'
+	) {
 		if (empty($values)) {
 			return $this;
 		}
-		$compare = is_array($compare) ? $compare[0] : $this->prepareColumn($compare);
+		$compare = is_array($compare)
+			? $compare[0]
+			: $this->prepareColumn($compare);
 		$data = join(',', $this->quote($values));
 		return $this->whereHandler("{$compare} {$operator} ({$data})", $type);
 	}
@@ -391,10 +412,15 @@ class SqlSentence
 	 */
 	public function whereBetween($compare, $first, $second, $type = 'AND')
 	{
-		$compare = is_array($compare) ? $compare[0] : $this->prepareColumn($compare);
+		$compare = is_array($compare)
+			? $compare[0]
+			: $this->prepareColumn($compare);
 		$first = is_array($first) ? $first[0] : $this->quote($first);
 		$second = is_array($first) ? $second[0] : $this->quote($second);
-		return $this->whereHandler("{$compare} BETWEEN {$first} AND {$second}", $type);
+		return $this->whereHandler(
+			"{$compare} BETWEEN {$first} AND {$second}",
+			$type
+		);
 	}
 
 	/**
@@ -422,15 +448,27 @@ class SqlSentence
 	 * @param	string				$type			Type of join
 	 * @return	mixed
 	 */
-	public function join($join, $joinColumn, $operator = null, $tableColumn = null, $type = 'INNER')
-	{
+	public function join(
+		$join,
+		$joinColumn,
+		$operator = null,
+		$tableColumn = null,
+		$type = 'INNER'
+	) {
 		if ($joinColumn instanceof Closure) {
 			$sentence = $this->newSelf();
 			$joinColumn($sentence);
-			$this->join[] = "{$type} JOIN {$join} ON {$this->buildOn($sentence)}";
+			$this->join[] = "{$type} JOIN {$join} ON {$this->buildOn(
+				$sentence
+			)}";
 			return $this;
 		}
-		$this->join[] = "{$type} JOIN {$join} ON {$this->addOn($join,$joinColumn,$operator,$tableColumn)}";
+		$this->join[] = "{$type} JOIN {$join} ON {$this->addOn(
+			$join,
+			$joinColumn,
+			$operator,
+			$tableColumn
+		)}";
 		return $this;
 	}
 
@@ -444,8 +482,12 @@ class SqlSentence
 	 * @param	string				$tableColumn	This table key
 	 * @return	mixed
 	 */
-	public function innerJoin($join, $joinColumn, $operator = null, $tableColumn = null)
-	{
+	public function innerJoin(
+		$join,
+		$joinColumn,
+		$operator = null,
+		$tableColumn = null
+	) {
 		return $this->join($join, $joinColumn, $operator, $tableColumn);
 	}
 
@@ -459,8 +501,12 @@ class SqlSentence
 	 * @param	string				$tableColumn	This table key
 	 * @return	mixed
 	 */
-	public function leftJoin($join, $joinColumn, $operator = null, $tableColumn = null)
-	{
+	public function leftJoin(
+		$join,
+		$joinColumn,
+		$operator = null,
+		$tableColumn = null
+	) {
 		return $this->join($join, $joinColumn, $operator, $tableColumn, 'LEFT');
 	}
 
@@ -474,9 +520,19 @@ class SqlSentence
 	 * @param	string				$tableColumn	This table key
 	 * @return	mixed
 	 */
-	public function rightJoin($join, $joinColumn, $operator = null, $tableColumn = null)
-	{
-		return $this->join($join, $joinColumn, $operator, $tableColumn, 'RIGHT');
+	public function rightJoin(
+		$join,
+		$joinColumn,
+		$operator = null,
+		$tableColumn = null
+	) {
+		return $this->join(
+			$join,
+			$joinColumn,
+			$operator,
+			$tableColumn,
+			'RIGHT'
+		);
 	}
 
 	/**
@@ -489,9 +545,19 @@ class SqlSentence
 	 * @param	string				$tableColumn	This table key
 	 * @return	mixed
 	 */
-	public function fullOuterJoin($join, $joinColumn, $operator = null, $tableColumn = null)
-	{
-		return $this->join($join, $joinColumn, $operator, $tableColumn, 'FULL OUTER');
+	public function fullOuterJoin(
+		$join,
+		$joinColumn,
+		$operator = null,
+		$tableColumn = null
+	) {
+		return $this->join(
+			$join,
+			$joinColumn,
+			$operator,
+			$tableColumn,
+			'FULL OUTER'
+		);
 	}
 
 	/**
@@ -505,12 +571,22 @@ class SqlSentence
 	 * @param	string		$type			On union type (and, or)
 	 * @return	string
 	 */
-	public function addOn($join, $joinColumn, $operator, $tableColumn, $type = 'AND')
-	{
-		$joinColumn = is_array($joinColumn) ? $joinColumn[0] : $this->prepareColumn($joinColumn, $join);
-		$tableColumn = is_array($tableColumn) ? $tableColumn[0] : $this->prepareColumn($tableColumn);
-		return empty($this->on) ? "{$joinColumn} {$operator} {$tableColumn}" :
-			"{$type} {$joinColumn} {$operator} {$tableColumn}";
+	public function addOn(
+		$join,
+		$joinColumn,
+		$operator,
+		$tableColumn,
+		$type = 'AND'
+	) {
+		$joinColumn = is_array($joinColumn)
+			? $joinColumn[0]
+			: $this->prepareColumn($joinColumn, $join);
+		$tableColumn = is_array($tableColumn)
+			? $tableColumn[0]
+			: $this->prepareColumn($tableColumn);
+		return empty($this->on)
+			? "{$joinColumn} {$operator} {$tableColumn}"
+			: "{$type} {$joinColumn} {$operator} {$tableColumn}";
 	}
 
 	/**
@@ -525,7 +601,13 @@ class SqlSentence
 	 */
 	public function on($joinColumn, $operator, $tableColumn, $type = 'AND')
 	{
-		$this->on[] = $this->addOn(null, $joinColumn, $operator, $tableColumn, $type);
+		$this->on[] = $this->addOn(
+			null,
+			$joinColumn,
+			$operator,
+			$tableColumn,
+			$type
+		);
 		return $this;
 	}
 
@@ -553,13 +635,22 @@ class SqlSentence
 	 * @param	string		$operator		Operator
 	 * @return	mixed
 	 */
-	public function onIn($joinColumn, array $values, $type = 'AND', $operator = 'IN')
-	{
+	public function onIn(
+		$joinColumn,
+		array $values,
+		$type = 'AND',
+		$operator = 'IN'
+	) {
 		if (empty($values)) {
 			return $this;
 		}
 		$data = $this->quote($values);
-		return $this->on($joinColumn, $operator, ['(' . join(',', $data) . ')'], $type);
+		return $this->on(
+			$joinColumn,
+			$operator,
+			['(' . join(',', $data) . ')'],
+			$type
+		);
 	}
 
 	/**
@@ -600,13 +691,18 @@ class SqlSentence
 	 * @param	string			$type		Having union type (And, Or)
 	 * @return	mixed
 	 */
-	public function having($compare, $operator = null, $to = null, $type = 'AND')
-	{
+	public function having(
+		$compare,
+		$operator = null,
+		$to = null,
+		$type = 'AND'
+	) {
 		if ($compare instanceof Closure) {
 			$sentence = $this->newSelf();
 			$compare($sentence);
-			$having = empty($this->having) ? "({$this->buildHaving($sentence)})" :
-				"{$type} ({$this->buildHaving($sentence)})";
+			$having = empty($this->having)
+				? "({$this->buildHaving($sentence)})"
+				: "{$type} ({$this->buildHaving($sentence)})";
 			$this->having[] = $having;
 			return $this;
 		}
@@ -615,8 +711,12 @@ class SqlSentence
 			$operator = '=';
 		}
 		$to = is_array($to) ? $to[0] : $this->quote($to);
-		$compare = is_array($compare) ? $compare[0] : $this->prepareColumn($compare);
-		$having = empty($this->having) ? "{$compare} {$operator} {$to}" : "{$type} {$compare} {$operator} {$to}";
+		$compare = is_array($compare)
+			? $compare[0]
+			: $this->prepareColumn($compare);
+		$having = empty($this->having)
+			? "{$compare} {$operator} {$to}"
+			: "{$type} {$compare} {$operator} {$to}";
 		$this->having[] = $having;
 		return $this;
 	}
@@ -779,7 +879,9 @@ class SqlSentence
 		}
 		$fields = join(',', $update);
 		$joins = empty($this->join) ? '' : ' ' . join(' ', $this->join);
-		return "UPDATE {$this->table}{$joins} SET {$fields} WHERE {$this->buildWhere($this)}";
+		return "UPDATE {$this->table}{$joins} SET {$fields} WHERE {$this->buildWhere(
+			$this
+		)}";
 	}
 
 	/**
@@ -792,7 +894,9 @@ class SqlSentence
 	public function buildDelete($table = ' ')
 	{
 		$joins = empty($this->join) ? '' : ' ' . join(' ', $this->join);
-		return "DELETE{$table}FROM {$this->table}{$joins} WHERE {$this->buildWhere($this)}";
+		return "DELETE{$table}FROM {$this->table}{$joins} WHERE {$this->buildWhere(
+			$this
+		)}";
 	}
 
 	/**
@@ -808,7 +912,9 @@ class SqlSentence
 		if (!isset($table)) {
 			$table = $this->table;
 		}
-		return (strpos($key, '.') === false && strpos($key, '(') === false) ?	"{$table}.{$key}" : $key;
+		return strpos($key, '.') === false && strpos($key, '(') === false
+			? "{$table}.{$key}"
+			: $key;
 	}
 
 	/**
@@ -820,8 +926,9 @@ class SqlSentence
 	 */
 	protected function quote($value)
 	{
-		return is_array($value) ? array_map([$this, 'clean'], $value) :
-			$this->clean($value);
+		return is_array($value)
+			? array_map([$this, 'clean'], $value)
+			: $this->clean($value);
 	}
 
 	/**
@@ -833,7 +940,9 @@ class SqlSentence
 	 */
 	protected function clean($value)
 	{
-		return (!is_numeric($value) && $value !== '?') ? addslashes($value) : $value;
+		return !is_numeric($value) && $value !== '?'
+			? addslashes($value)
+			: $value;
 	}
 
 	/**
@@ -844,7 +953,7 @@ class SqlSentence
 	 */
 	protected function newSelf()
 	{
-		$self = new self;
+		$self = new self();
 		$self->table = $this->table;
 		return $self;
 	}
@@ -863,7 +972,8 @@ class SqlSentence
 	{
 		$builder = [];
 		foreach ($cases as $key => $value) {
-			$builder[] = 'WHEN ' . $this->clean($key) . ' THEN ' . $this->clean($value);
+			$builder[] =
+				'WHEN ' . $this->clean($key) . ' THEN ' . $this->clean($value);
 		}
 		if (isset($else)) {
 			$builder[] = 'ELSE ' . $this->clean($else);

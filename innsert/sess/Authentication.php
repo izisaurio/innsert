@@ -2,8 +2,7 @@
 
 namespace innsert\sess;
 
-use innsert\mvc\AuthModel,
-	innsert\lib\Request;
+use innsert\mvc\AuthModel, innsert\lib\Request;
 
 /**
  * Innsert PHP MVC Framework
@@ -67,9 +66,9 @@ class Authentication
 	{
 		$request = Request::defaultInstance();
 		return [
-			'time'		=>	time(),
-			'address'	=>	$request->server('REMOTE_ADDR'),
-			'agent'		=>	$request->server('HTTP_USER_AGENT')
+			'time' => time(),
+			'address' => $request->server('REMOTE_ADDR'),
+			'agent' => $request->server('HTTP_USER_AGENT'),
 		];
 	}
 
@@ -91,11 +90,13 @@ class Authentication
 	 * Simple validation, use DBAuthentication or extend to create your own
 	 *
 	 * @access	public
-	 * @return	bool	
+	 * @return	bool
 	 */
 	public function validate()
 	{
-		return isset($this->model) && $this->model instanceof AuthModel && isset($this->data);
+		return isset($this->model) &&
+			$this->model instanceof AuthModel &&
+			isset($this->data);
 	}
 
 	/**

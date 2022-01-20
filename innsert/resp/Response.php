@@ -54,7 +54,7 @@ abstract class Response
 		500 => 'Internal Server Error',
 		501 => 'Not Implemented',
 		503 => 'Service Unavailable',
-		550 => 'Permission denied'
+		550 => 'Permission denied',
 	];
 
 	/**
@@ -83,9 +83,14 @@ abstract class Response
 	public function __construct()
 	{
 		if (!isset($this->protocol)) {
-			$this->protocol = Request::defaultInstance()->server('SERVER_PROTOCOL');
+			$this->protocol = Request::defaultInstance()->server(
+				'SERVER_PROTOCOL'
+			);
 		}
-		$this->header('X-Powered-By', 'Innsert Framework <izi.isaac@gmail.com>');
+		$this->header(
+			'X-Powered-By',
+			'Innsert Framework <izi.isaac@gmail.com>'
+		);
 	}
 
 	/**
@@ -97,12 +102,17 @@ abstract class Response
 	 * @param	array	$adds		Aditional header values
 	 * @return	Response
 	 */
-	public function header($type, $value, array $adds = array())
+	public function header($type, $value, array $adds = [])
 	{
 		if (empty($adds)) {
 			$this->headers[] = "{$type}:{$value}";
 		} else {
-			$this->headers[] = $type . ':' . $value . '; ' . urldecode(http_build_query($adds, '', ';'));
+			$this->headers[] =
+				$type .
+				':' .
+				$value .
+				'; ' .
+				urldecode(http_build_query($adds, '', ';'));
 		}
 		return $this;
 	}
@@ -119,8 +129,7 @@ abstract class Response
 		foreach ($headers as $key => $value) {
 			if (is_int($key)) {
 				$this->header($value[0], $value[1], $value[2]);
-			}
-			else {
+			} else {
 				$this->header($key, $value);
 			}
 		}
@@ -136,7 +145,7 @@ abstract class Response
 	{
 		$this->writeHeaders();
 		echo $this->body;
-		exit;
+		exit();
 	}
 
 	/**
@@ -146,7 +155,9 @@ abstract class Response
 	 */
 	protected function writeHeaders()
 	{
-		$message = array_key_exists($this->code, $this->messages) ? $this->messages[$this->code] : 'n/a';
+		$message = array_key_exists($this->code, $this->messages)
+			? $this->messages[$this->code]
+			: 'n/a';
 		header("{$this->protocol} {$this->code} {$message}", true, $this->code);
 		foreach ($this->headers as $header) {
 			header($header);

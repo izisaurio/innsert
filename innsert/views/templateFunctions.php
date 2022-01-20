@@ -11,16 +11,16 @@ use innsert\lib\Request,
  *
  * Views helper functions
  *
- * @author	izisaurio
- * @package	innsert
- * @version	1
+ * @author  izisaurio
+ * @package innsert
+ * @version 1
  */
 
 /**
  * Writes an array as html element attributes
  *
- * @param	array	$attrs	Attributes to write
- * @return	string
+ * @param   array   $attrs  Attributes to write
+ * @return  string
  */
 function attrs(array $attrs)
 {
@@ -34,8 +34,8 @@ function attrs(array $attrs)
 /**
  * Escapes a string
  *
- * @param	string	$data	String to escape
- * @return	string
+ * @param   string  $data   String to escape
+ * @return  string
  */
 function e($data)
 {
@@ -45,18 +45,18 @@ function e($data)
 /**
  * Returns a DatePlus instance
  *
- * @param	string	$date	Date value as (Y-m-d H:i:s)
- * @return	DatePlus
+ * @param   string  $date   Date value as (Y-m-d H:i:s)
+ * @return  DatePlus
  */
 function datePlus($date = null)
 {
-	return isset($date) ? DatePlus::fromDB($date) : new DatePlus;
+	return isset($date) ? DatePlus::fromDB($date) : new DatePlus();
 }
 
 /**
  * Returns default session instance
  *
- * @return	Session
+ * @return  Session
  */
 function session()
 {
@@ -66,11 +66,11 @@ function session()
 /**
  * Returns a label
  *
- * @param	string	$message	Label key
- * @param	array	$params		Optional params of label message
- * @return	string
+ * @param   string  $message    Label key
+ * @param   array   $params     Optional params of label message
+ * @return  string
  */
-function lang($message, array $params = array())
+function lang($message, array $params = [])
 {
 	return Lang::defaultInstance()->get($message, $params);
 }
@@ -78,9 +78,9 @@ function lang($message, array $params = array())
 /**
  * Returns an HttpRequest GET key value
  *
- * @param	string	$key		GET key
- * @param	mixed	$default	Default value if key not found
- * @return	string
+ * @param   string  $key        GET key
+ * @param   mixed   $default    Default value if key not found
+ * @return  string
  */
 function get($key, $default = null)
 {
@@ -97,19 +97,19 @@ function get($key, $default = null)
  */
 function getArray($key, $index, $default = null)
 {
-    $get = Request::defaultInstance()->get($key); 
-    if (!isset($get)) {
-        return $default;
-    }
-    return isset($get[$index]) ? $get[$index] : $default;
+	$get = Request::defaultInstance()->get($key);
+	if (!isset($get)) {
+		return $default;
+	}
+	return isset($get[$index]) ? $get[$index] : $default;
 }
 
 /**
  * Returns an HttpRequest POST key value
  *
- * @param	string	$key		POST key
- * @param	mixed	$default	Default value if key not found
- * @return	string
+ * @param   string  $key        POST key
+ * @param   mixed   $default    Default value if key not found
+ * @return  string
  */
 function post($key, $default = null)
 {
@@ -126,22 +126,22 @@ function post($key, $default = null)
  */
 function postArray($key, $index, $default = null)
 {
-    $post = Request::defaultInstance()->post($key); 
-    if (!isset($post)) {
-        return $default;
-    }
-    return isset($post[$index]) ? $post[$index] : $default;
+	$post = Request::defaultInstance()->post($key);
+	if (!isset($post)) {
+		return $default;
+	}
+	return isset($post[$index]) ? $post[$index] : $default;
 }
 
 /**
  * Returns html of a "a" element (anchor, link)
  *
- * @param	string	$text	Anchor text
- * @param	string	$url	Anchor href
- * @param	array	$attrs	Attributes to write in element
- * @return	string
+ * @param   string  $text   Anchor text
+ * @param   string  $url    Anchor href
+ * @param   array   $attrs  Attributes to write in element
+ * @return  string
  */
-function a($text, $url, array $attrs = array())
+function a($text, $url, array $attrs = [])
 {
 	return '<a href="' . $url . '" ' . attrs($attrs) . '>' . $text . '</a>';
 }
@@ -149,11 +149,11 @@ function a($text, $url, array $attrs = array())
 /**
  * Returns html of a img element
  *
- * @param	string	$url	Image path
- * @param	string	$attrs	Attributes to write in element
- * @return	string
+ * @param   string  $url    Image path
+ * @param   string  $attrs  Attributes to write in element
+ * @return  string
  */
-function img($url, array $attrs = array())
+function img($url, array $attrs = [])
 {
 	return '<img src="' . $url . '" ' . attrs($attrs) . ' />';
 }
@@ -161,27 +161,33 @@ function img($url, array $attrs = array())
 /**
  * Returns html of a input element
  *
- * @param	string	$type		Element type (text, password, submit, etc)
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $type       Element type (text, password, submit, etc)
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function input($type, $name, $value = null, array $attrs = array())
+function input($type, $name, $value = null, array $attrs = [])
 {
-	return '<input type="' . $type . '" name="' . $name . '" ' .
-		(isset($value) ? 'value="' . $value . '" ' : '') . attrs($attrs) . '/>';
+	return '<input type="' .
+		$type .
+		'" name="' .
+		$name .
+		'" ' .
+		(isset($value) ? 'value="' . $value . '" ' : '') .
+		attrs($attrs) .
+		'/>';
 }
 
 /**
  * Returns html of a input type text element
  *
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function text($name, $value = null, array $attrs = array())
+function text($name, $value = null, array $attrs = [])
 {
 	return input('text', $name, $value, $attrs);
 }
@@ -189,12 +195,12 @@ function text($name, $value = null, array $attrs = array())
 /**
  * Returns html of a input type email element
  *
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function email($name, $value = null, array $attrs = array())
+function email($name, $value = null, array $attrs = [])
 {
 	return input('email', $name, $value, $attrs);
 }
@@ -202,12 +208,12 @@ function email($name, $value = null, array $attrs = array())
 /**
  * Returns html of a input type password element
  *
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function password($name, $value = null, array $attrs = array())
+function password($name, $value = null, array $attrs = [])
 {
 	return input('password', $name, $value, $attrs);
 }
@@ -215,12 +221,12 @@ function password($name, $value = null, array $attrs = array())
 /**
  * Returns html of a input type number element
  *
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function number($name, $value = null, array $attrs = array())
+function number($name, $value = null, array $attrs = [])
 {
 	return input('number', $name, $value, $attrs);
 }
@@ -228,42 +234,53 @@ function number($name, $value = null, array $attrs = array())
 /**
  * Returns html of a hidden input with a csrf token
  *
- * @param	string	$name		Element name
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function csrf($name = 'token', array $attrs = array())
+function csrf($name = 'token', array $attrs = [])
 {
 	$token = StringFunctions::uniqueString();
 	$session = Sess::defaultInstance();
-    $session[$name] = $token;
+	$session[$name] = $token;
 	return input('hidden', $name, $token, $attrs);
 }
 
 /**
  * Returns html of a textarea element
  *
- * @param	string	$name		Element name
- * @param	string	$value		Element value
- * @param	array	$attrs		Attributes to write in element
- * @return	string
+ * @param   string  $name       Element name
+ * @param   string  $value      Element value
+ * @param   array   $attrs      Attributes to write in element
+ * @return  string
  */
-function textarea($name, $value = '', array $attrs = array())
+function textarea($name, $value = '', array $attrs = [])
 {
-	return '<textarea name="' . $name . '" ' . attrs($attrs) . '>' . $value . '</textarea>';
+	return '<textarea name="' .
+		$name .
+		'" ' .
+		attrs($attrs) .
+		'>' .
+		$value .
+		'</textarea>';
 }
 
 /**
  * Returns a select with options as key => value pair
- * 
- * @param	string	$name			Select element name
- * @param	array	$options		Options collection
- * @param	mixed	$default		Default value
- * @param	mixed	$placeholder	Placeholder text when no value selected
- * @param	array	$attrs			Attributes to write in select
+ *
+ * @param   string  $name           Select element name
+ * @param   array   $options        Options collection
+ * @param   mixed   $default        Default value
+ * @param   mixed   $placeholder    Placeholder text when no value selected
+ * @param   array   $attrs          Attributes to write in select
  */
-function select($name, $options, $default = null, $placeholder = null, array $attrs = array())
-{
+function select(
+	$name,
+	$options,
+	$default = null,
+	$placeholder = null,
+	array $attrs = []
+) {
 	$attrs['name'] = $name;
 	if (isset($default) && !is_array($default)) {
 		$default = [$default];
@@ -273,7 +290,8 @@ function select($name, $options, $default = null, $placeholder = null, array $at
 		$select .= "<option value='' class='select-default'>{$placeholder}</option>";
 	}
 	foreach ($options as $key => $option) {
-		$selected = (isset($default) && in_array($key, $default)) ? ' selected' : '';
+		$selected =
+			isset($default) && in_array($key, $default) ? ' selected' : '';
 		$select .= "<option value='{$key}'{$selected}>{$option}</option>";
 	}
 	return "{$select}</select>";
@@ -282,16 +300,22 @@ function select($name, $options, $default = null, $placeholder = null, array $at
 /**
  * Returns a select with option values parsed of labels array
  *
- * @param	string	$name			Select element name
- * @param	array	$options		Options collection
- * @param	array	$labels			Array of labels
- * @param	mixed	$default		Default value
- * @param	mixed	$placeholder	Placeholder text when no value selected
- * @param	array	$attrs			Attributes to write in select
- * @return	string
+ * @param   string  $name           Select element name
+ * @param   array   $options        Options collection
+ * @param   array   $labels         Array of labels
+ * @param   mixed   $default        Default value
+ * @param   mixed   $placeholder    Placeholder text when no value selected
+ * @param   array   $attrs          Attributes to write in select
+ * @return  string
  */
-function selectWithLabelsArray($name, $options, array $labels, $default = null, $placeholder = null, array $attrs = array())
-{
+function selectWithLabelsArray(
+	$name,
+	$options,
+	array $labels,
+	$default = null,
+	$placeholder = null,
+	array $attrs = []
+) {
 	$results = [];
 	foreach ($options as $key => $value) {
 		$results[$key] = $labels[$value];

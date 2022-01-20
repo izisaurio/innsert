@@ -19,7 +19,7 @@ class Validator
 	 * Parsed token
 	 *
 	 * @access	private
-	 * @var		Parser	
+	 * @var		Parser
 	 */
 	private $jwt;
 
@@ -38,10 +38,10 @@ class Validator
 	 * @var	array
 	 */
 	protected $messages = [
-		'STRUCTURE'	=>	'Token does not have the correct structure',
-		'SIGNATURE'	=>	'Token signature does not match',
-		'NOTBEFORE'	=>	'Token is not expected yet',
-		'EXPIRED'	=>	'Token expired'
+		'STRUCTURE' => 'Token does not have the correct structure',
+		'SIGNATURE' => 'Token signature does not match',
+		'NOTBEFORE' => 'Token is not expected yet',
+		'EXPIRED' => 'Token expired',
 	];
 
 	/**
@@ -65,7 +65,11 @@ class Validator
 	 */
 	private function structure()
 	{
-		$ok = preg_match('/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/', $this->jwt->token->code) === 1;
+		$ok =
+			preg_match(
+				'/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
+				$this->jwt->token->code
+			) === 1;
 		if (!$ok) {
 			$this->message = $this->messages['STRUCTURE'];
 		}
@@ -81,8 +85,16 @@ class Validator
 	private function signature()
 	{
 		$token = $this->jwt->token;
-		$obtainedSignature = hash_hmac($this->jwt->hash[0], "{$token->header}.{$token->payload}", $this->jwt->secret, true);
-		$ok = hash_equals(Base64URL::encode($obtainedSignature), $token->signature);
+		$obtainedSignature = hash_hmac(
+			$this->jwt->hash[0],
+			"{$token->header}.{$token->payload}",
+			$this->jwt->secret,
+			true
+		);
+		$ok = hash_equals(
+			Base64URL::encode($obtainedSignature),
+			$token->signature
+		);
 		if (!$ok) {
 			$this->message = $this->messages['SIGNATURE'];
 		}
@@ -100,7 +112,7 @@ class Validator
 		if (!isset($this->jwt->payload->nbf)) {
 			return true;
 		}
-		$ok = (time() + 1) >= $this->jwt->payload->nbf;
+		$ok = time() + 1 >= $this->jwt->payload->nbf;
 		if (!$ok) {
 			$this->message = $this->messages['NOTBEFORE'];
 		}
@@ -133,7 +145,10 @@ class Validator
 	 */
 	public function validate()
 	{
-		return $this->structure() && $this->signature() && $this->notBefore() && $this->expires();
+		return $this->structure() &&
+			$this->signature() &&
+			$this->notBefore() &&
+			$this->expires();
 	}
 
 	/**

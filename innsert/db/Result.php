@@ -128,7 +128,9 @@ class Result
 	{
 		$first = $this->first();
 		if (!$first) {
-			$message = isset($error) ? $error : Lang::defaultInstance()->get('error');
+			$message = isset($error)
+				? $error
+				: Lang::defaultInstance()->get('error');
 			throw new ControllerControlledException($message);
 		}
 		return $first;

@@ -59,13 +59,19 @@ class Controller
 	 * @param	array	$template	View template path if not using router values
 	 * @return	ViewResponse
 	 */
-	protected function view(array $master = null, array $template = array())
+	protected function view(array $master = null, array $template = [])
 	{
-		$path = !empty($template) ? $template :
-			array_merge($this->request->router->controller, ['action' => $this->request->router->action]);
+		$path = !empty($template)
+			? $template
+			: array_merge($this->request->router->controller, [
+				'action' => $this->request->router->action,
+			]);
 		$view = new LanguageView($path, (array) $this->items);
 		if (isset($master)) {
-			$view->master = new LanguageMaster($master, array_merge((array) $this->items, ['view' => $view]));
+			$view->master = new LanguageMaster(
+				$master,
+				array_merge((array) $this->items, ['view' => $view])
+			);
 			$view->render();
 			return new ViewResponse($view->master);
 		}
@@ -80,7 +86,7 @@ class Controller
 	 * @param	array	$headers	Optional headers
 	 * @return	JsonResponse
 	 */
-	protected function json(array $json, array $headers = array())
+	protected function json(array $json, array $headers = [])
 	{
 		$response = new JsonResponse($json);
 		if (empty($headers)) {

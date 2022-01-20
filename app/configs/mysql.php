@@ -3,9 +3,7 @@
 /**
  * Innsert PHP MVC Framework
  *
- * Opciones de configuración de la base de datos default.
- * Para usar mútiples genera un nuevo archivo de configuración y
- * una clase heredada de innsert/db/DBMysql que apunte a ese nuevo archivo
+ * Default database config options
  *
  * @author	izisaurio
  * @package	innsert/framework
@@ -13,37 +11,37 @@
  */
 return [
 	/**
-	* El nombre o dirección del servidor de base de datos
-	*
-	* @var	string
-	*/
+	 * Server location
+	 *
+	 * @var	string
+	 */
 	'server' => 'localhost',
 
 	/**
-	* El nombre de usuario con acceso a la base de datos
-	*
-	* @var	string
-	*/
+	 * User name
+	 *
+	 * @var	string
+	 */
 	'user' => 'user',
 
 	/**
-	* La contraseña del usuario
-	*
-	* @var	string
-	*/
+	 * User password
+	 *
+	 * @var	string
+	 */
 	'password' => '###',
 
 	/**
-	* El nombre de la base de datos en la que se trabajará
-	*
-	* @var	string
-	*/
+	 * Default database name
+	 *
+	 * @var	string
+	 */
 	'database' => 'defaultDatabase',
 
 	/**
-	* El charset por defecto con el que se trabajá
-	*
-	* @var	string
-	*/
-	'charset' => 'utf8mb4'
+	 * Default database charset
+	 *
+	 * @var	string
+	 */
+	'charset' => 'utf8mb4',
 ];

@@ -90,7 +90,7 @@ abstract class Membership
 				$this->close();
 			} else {
 				$this->status = true;
-				$this->data = (object)$this->session[$this->sessionKey];
+				$this->data = (object) $this->session[$this->sessionKey];
 			}
 		}
 	}
@@ -153,7 +153,7 @@ abstract class Membership
 		}
 		$this->session[$this->sessionKey] = $auth->authData();
 		$this->status = true;
-		$this->data = (object)$this->session[$this->sessionKey];
+		$this->data = (object) $this->session[$this->sessionKey];
 		return true;
 	}
 
@@ -169,7 +169,10 @@ abstract class Membership
 		if (is_array($key)) {
 			$this->session[$this->sessionKey] = array_merge($this->data, $key);
 		} else {
-			$this->session [$this->sessionKey] = array_merge((array)$this->data, [$key => $value]);
+			$this->session[$this->sessionKey] = array_merge(
+				(array) $this->data,
+				[$key => $value]
+			);
 		}
 	}
 
@@ -200,7 +203,9 @@ abstract class Membership
 			if (!isset($this->data->permissions)) {
 				return false;
 			}
-			$permissions = is_array($permissions) ? $permissions : [$permissions];
+			$permissions = is_array($permissions)
+				? $permissions
+				: [$permissions];
 			$result = array_intersect($permissions, $this->data->permissions);
 			return !empty($result);
 		}

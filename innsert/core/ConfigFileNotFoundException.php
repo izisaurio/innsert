@@ -25,6 +25,8 @@ class ConfigFileNotFoundException extends Exception
 	 */
 	public function __construct($class, $file)
 	{
-		parent::__construct("Configuration file not found ({$file}), for vlass ({$class})");
+		parent::__construct(
+			"Configuration file not found ({$file}), for vlass ({$class})"
+		);
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace innsert\db;
+
 use innsert\mvc\AuthModel;
 
 /**
@@ -14,47 +15,47 @@ use innsert\mvc\AuthModel;
  */
 class DBAuthModel extends DBModel implements AuthModel
 {
-    /**
-     * Membership model data for http sessions
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function sessMembershipData()
-    {
-        return [];
-    }
+	/**
+	 * Membership model data for http sessions
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function sessMembershipData()
+	{
+		return [];
+	}
 
-    /**
-     * Permissions for http sessions
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function findSessUserPermissions()
-    {
-        return [];
-    }
+	/**
+	 * Permissions for http sessions
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function findSessUserPermissions()
+	{
+		return [];
+	}
 
-    /**
-     * Membership model data for jwt tokens
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function jwtMembershipData()
-    {
-        return [];
-    }
+	/**
+	 * Membership model data for jwt tokens
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function jwtMembershipData()
+	{
+		return [];
+	}
 
-    /**
-     * Permissions for jwt tokens
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function findJwtUserPermissions()
-    {
-        return [];
-    }
+	/**
+	 * Permissions for jwt tokens
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function findJwtUserPermissions()
+	{
+		return [];
+	}
 }

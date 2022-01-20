@@ -46,7 +46,9 @@ class ImageResponse extends Response
 	public function __construct($file, $mime)
 	{
 		if (!file_exists($file)) {
-			return (new RequestError(Lang::defaultInstance()->get('fileNotFound')))->send();
+			return (new RequestError(
+				Lang::defaultInstance()->get('fileNotFound')
+			))->send();
 		}
 		$this->header('Content-Type', $mime);
 		$this->header('Content-Length', filesize($file));
@@ -62,6 +64,6 @@ class ImageResponse extends Response
 	{
 		$this->writeHeaders();
 		readfile($this->file);
-		exit;
+		exit();
 	}
 }

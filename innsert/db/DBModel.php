@@ -2,8 +2,7 @@
 
 namespace innsert\db;
 
-use innsert\mvc\Model,
-	innsert\mvc\ControllerControlledException;
+use innsert\mvc\Model, innsert\mvc\ControllerControlledException;
 
 /**
  * Innsert PHP MVC Framework
@@ -105,7 +104,7 @@ class DBModel extends Model
 	 * @return	DBModel
 	 * @throws	ControllerControlledException
 	 */
-	public function updateUnion(DBUnion $relation, $data = array())
+	public function updateUnion(DBUnion $relation, $data = [])
 	{
 		if (!$data || !is_array($data)) {
 			$data = [];

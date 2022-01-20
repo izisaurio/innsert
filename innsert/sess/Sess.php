@@ -32,7 +32,7 @@ class Sess
 	public static function defaultInstance()
 	{
 		if (!isset(self::$instance)) {
-			self::$instance = new Session;
+			self::$instance = new Session();
 		}
 		return self::$instance;
 	}

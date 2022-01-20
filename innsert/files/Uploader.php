@@ -2,8 +2,7 @@
 
 namespace innsert\files;
 
-use innsert\core\ErrorManager,
-	\Closure;
+use innsert\core\ErrorManager, \Closure;
 
 /**
  * Innsert PHP MVC Framework
@@ -68,8 +67,12 @@ class Uploader extends ErrorManager
 	 * @param	bool		$replace	Flag for replacing a file if already exists
 	 * @throws	ConfigFileNotFoundException
 	 */
-	public function __construct(array $files, array $path = array(), array $mimes = null, $replace = false)
-	{
+	public function __construct(
+		array $files,
+		array $path = [],
+		array $mimes = null,
+		$replace = false
+	) {
 		parent::__construct();
 		$this->uploadPath = empty($path) ? '' : (new Folder($path))->realPath;
 		$items = [];
@@ -80,11 +83,11 @@ class Uploader extends ErrorManager
 						continue;
 					}
 					$items[] = [
-						'name'		=> $files['name'][$key],
-						'type'		=> $files['type'][$key],
-						'tmp_name'	=> $files['tmp_name'][$key],
-						'error'		=> $files['error'][$key],
-						'size'		=> $files['size'][$key],
+						'name' => $files['name'][$key],
+						'type' => $files['type'][$key],
+						'tmp_name' => $files['tmp_name'][$key],
+						'error' => $files['error'][$key],
+						'size' => $files['size'][$key],
 					];
 				}
 			} else {
@@ -178,7 +181,7 @@ class Uploader extends ErrorManager
 	 */
 	public function first(Closure $closure)
 	{
-		$closure((isset($this->files[0]) ? $this->files[0] : null), 0, $this);
+		$closure(isset($this->files[0]) ? $this->files[0] : null, 0, $this);
 		return $this;
 	}
 

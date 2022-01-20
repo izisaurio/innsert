@@ -32,7 +32,7 @@ class Defaults
 	public static function defaultInstance()
 	{
 		if (!isset(self::$instance)) {
-			self::$instance = new DefaultConfigs;
+			self::$instance = new DefaultConfigs();
 		}
 		return self::$instance;
 	}

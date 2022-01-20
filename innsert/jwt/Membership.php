@@ -2,7 +2,7 @@
 
 namespace innsert\jwt;
 
-use	innsert\resp\Redirect,
+use innsert\resp\Redirect,
 	innsert\resp\Response,
 	innsert\lib\StringFunctions,
 	innsert\core\Defaults,
@@ -37,7 +37,7 @@ class Membership
 
 	/**
 	 * Payload helper used when encrypting data
-	 * 
+	 *
 	 * @access	public
 	 * @var		Payload
 	 */
@@ -74,10 +74,10 @@ class Membership
 	 * @var		array
 	 */
 	protected $jwtConfigs = [
-		'jsonTokenId'			=>	'not.used',
-		'issuer'				=>	'innsert',
-		'notBeforeInSeconds'	=>	0,
-		'expiresInSeconds'		=>	86400 //1 day
+		'jsonTokenId' => 'not.used',
+		'issuer' => 'innsert',
+		'notBeforeInSeconds' => 0,
+		'expiresInSeconds' => 86400, //1 day
 	];
 
 	/**
@@ -118,9 +118,11 @@ class Membership
 				$this->close();
 			} else {
 				$this->jwt = $jwt;
-				$this->status = true;		
-				$data = isset($this->payload) ? $this->payload->decrypt($jwt->getPayloadData()) : $jwt->getPayloadData();
-				$this->data = (object)$data;
+				$this->status = true;
+				$data = isset($this->payload)
+					? $this->payload->decrypt($jwt->getPayloadData())
+					: $jwt->getPayloadData();
+				$this->data = (object) $data;
 			}
 		}
 	}
@@ -167,14 +169,12 @@ class Membership
 		if (!$auth->validate()) {
 			return;
 		}
-		$data = isset($this->payload) ? $this->payload->encrypt($auth->authData()) : $auth->authData();
-		$builder = Jwt::build(
-			$this->secret,
-			$data,
-			$this->jwtConfigs
-		);
+		$data = isset($this->payload)
+			? $this->payload->encrypt($auth->authData())
+			: $auth->authData();
+		$builder = Jwt::build($this->secret, $data, $this->jwtConfigs);
 		$this->status = true;
-		$this->data = (object)$builder->getPayloadData();
+		$this->data = (object) $builder->getPayloadData();
 		return $builder;
 	}
 
@@ -186,12 +186,10 @@ class Membership
 	 */
 	public function rebuild()
 	{
-		$data = isset($this->payload) ? $this->payload->encrypt((array)$this->data) : (array)$this->data;
-		return Jwt::build(
-			$this->secret,
-			$data,
-			$this->jwtConfigs
-		);
+		$data = isset($this->payload)
+			? $this->payload->encrypt((array) $this->data)
+			: (array) $this->data;
+		return Jwt::build($this->secret, $data, $this->jwtConfigs);
 	}
 
 	/**
@@ -220,7 +218,9 @@ class Membership
 			if (!isset($this->data->permissions)) {
 				return false;
 			}
-			$permissions = is_array($permissions) ? $permissions : [$permissions];
+			$permissions = is_array($permissions)
+				? $permissions
+				: [$permissions];
 			$result = array_intersect($permissions, $this->data->permissions);
 			return !empty($result);
 		}

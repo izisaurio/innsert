@@ -36,8 +36,8 @@ class Curl
 	 * @var		array
 	 */
 	public $defaultOptions = [
-		CURLOPT_POST			=>	true,
-		CURLOPT_RETURNTRANSFER	=>	true
+		CURLOPT_POST => true,
+		CURLOPT_RETURNTRANSFER => true,
 	];
 
 	/**
@@ -81,7 +81,7 @@ class Curl
 	 * @param	string	$url		Url to request
 	 * @param	array	$options	Curl options
 	 */
-	public function __construct($url, array $options = array())
+	public function __construct($url, array $options = [])
 	{
 		$this->url = $url;
 		$this->curl = curl_init($this->url);
@@ -147,7 +147,9 @@ class Curl
 			$this->defaultOptions[CURLOPT_HTTPHEADER] = $this->httpheaders;
 		}
 		if (!empty($this->postfields)) {
-			$values = $this->postFieldsEncoded ? http_build_query($this->postfields) : $this->postfields;
+			$values = $this->postFieldsEncoded
+				? http_build_query($this->postfields)
+				: $this->postfields;
 			$this->defaultOptions[CURLOPT_POSTFIELDS] = $values;
 		}
 		curl_setopt_array($this->curl, $this->defaultOptions);

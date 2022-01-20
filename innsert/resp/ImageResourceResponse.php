@@ -78,6 +78,6 @@ class ImageResourceResponse extends Response
 				break;
 		}
 		imagedestroy($this->image);
-		exit;
+		exit();
 	}
 }

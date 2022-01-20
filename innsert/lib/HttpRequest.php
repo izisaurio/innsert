@@ -2,8 +2,7 @@
 
 namespace innsert\lib;
 
-use innsert\files\Uploader,
-	\stdClass;
+use innsert\files\Uploader, \stdClass;
 
 /**
  * Innsert PHP MVC Framework
@@ -125,7 +124,9 @@ class HttpRequest
 		if (!isset($this->body)) {
 			$contents = file_get_contents('php://input');
 			$body = empty($contents) ? [] : json_decode($contents, true);
-			$this->body = is_array($body) ? new RequestParamValues($body) : new RequestParamValues([]);
+			$this->body = is_array($body)
+				? new RequestParamValues($body)
+				: new RequestParamValues([]);
 		}
 		return $this->body->value($name, $default);
 	}
@@ -154,9 +155,13 @@ class HttpRequest
 	public function apacheHeader($name, $default = null)
 	{
 		if (empty($this->apacheHeaders)) {
-			$this->apacheHeaders = array_change_key_case(apache_request_headers());
+			$this->apacheHeaders = array_change_key_case(
+				apache_request_headers()
+			);
 		}
-		return isset($this->apacheHeaders[$name]) ? $this->apacheHeaders[$name] : $default;
+		return isset($this->apacheHeaders[$name])
+			? $this->apacheHeaders[$name]
+			: $default;
 	}
 
 	/**
@@ -181,8 +186,12 @@ class HttpRequest
 	 * @param	bool	$replace	Replace existing files
 	 * @return	Uploader
 	 */
-	public function uploader($name, array $path = array(), array $mimes = null, $replace = null)
-	{
+	public function uploader(
+		$name,
+		array $path = [],
+		array $mimes = null,
+		$replace = null
+	) {
 		return new Uploader($this->file($name), $path, $mimes, $replace);
 	}
 }

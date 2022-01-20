@@ -13,35 +13,35 @@ namespace innsert\mvc;
  */
 interface AuthModel
 {
-    /**
-     * Membership model data for http sessions
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function sessMembershipData();
+	/**
+	 * Membership model data for http sessions
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function sessMembershipData();
 
-    /**
-     * Permissions for http sessions
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function findSessUserPermissions();
+	/**
+	 * Permissions for http sessions
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function findSessUserPermissions();
 
-    /**
-     * Membership model data for jwt tokens
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function jwtMembershipData();
+	/**
+	 * Membership model data for jwt tokens
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function jwtMembershipData();
 
-    /**
-     * Permissions for jwt tokens
-     * 
-     * @access	public
-     * @return	array
-     */
-    public function findJwtUserPermissions();
+	/**
+	 * Permissions for jwt tokens
+	 *
+	 * @access	public
+	 * @return	array
+	 */
+	public function findJwtUserPermissions();
 }

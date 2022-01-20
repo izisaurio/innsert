@@ -2,8 +2,7 @@
 
 namespace innsert\mvc;
 
-use innsert\lib\DatePlus,
-	innsert\sess\Sess;
+use innsert\lib\DatePlus, innsert\sess\Sess;
 
 /**
  * Innsert PHP MVC Framework
@@ -47,10 +46,10 @@ class DefaultValue
 	 * @var		array
 	 */
 	protected $shortcuts = [
-		'[now]'		=>	['DATETIME', 'now'],
-		'[today]'	=>	['DATE', 'today'],
-		'[time]'	=>	['TIME', 'time'],
-		'[user]'	=>	['SESSION', '__user__:id']
+		'[now]' => ['DATETIME', 'now'],
+		'[today]' => ['DATE', 'today'],
+		'[time]' => ['TIME', 'time'],
+		'[user]' => ['SESSION', '__user__:id'],
 	];
 
 	/**
@@ -70,8 +69,10 @@ class DefaultValue
 		if (array_key_exists($rule, $this->shortcuts)) {
 			list($type, $value) = $this->shortcuts[$rule];
 		} else {
-			list($type, $value) = (!is_string($rule) || strpos($rule, '|') === false)
-				? ['RAW', $rule] : explode('|', $rule);
+			list($type, $value) =
+				!is_string($rule) || strpos($rule, '|') === false
+					? ['RAW', $rule]
+					: explode('|', $rule);
 		}
 		$this->type = $type;
 		$this->value = $value;
@@ -91,37 +92,52 @@ class DefaultValue
 				return $this->value;
 			case 'MODEL':
 				if (!isset($this->model->{$this->value})) {
-					throw new DefaultValueNotFoundException('MODEL', $this->value);
+					throw new DefaultValueNotFoundException(
+						'MODEL',
+						$this->value
+					);
 				}
 				return $this->model->{$this->value};
 			case 'SESSION':
 				$session = Sess::defaultInstance();
 				if (strpos($this->value, ':') === false) {
 					if (!isset($session[$this->value])) {
-						throw new DefaultValueNotFoundException('SESSION', $this->value);
+						throw new DefaultValueNotFoundException(
+							'SESSION',
+							$this->value
+						);
 					}
 					return $session[$this->value];
 				}
 				list($k, $v) = explode(':', $this->value);
 				if (!isset($session[$k][$v])) {
-					throw new DefaultValueNotFoundException('SESSION', $this->value);
+					throw new DefaultValueNotFoundException(
+						'SESSION',
+						$this->value
+					);
 				}
 				return $session[$k][$v];
 			case 'DATETIME':
 				if ($this->value === 'now') {
-					return (new DatePlus)->toDB();
+					return (new DatePlus())->toDB();
 				}
-				return (new DatePlus)->setTimestamp(strtotime($this->value))->toDB();
+				return (new DatePlus())
+					->setTimestamp(strtotime($this->value))
+					->toDB();
 			case 'DATE':
 				if ($this->value === 'today') {
-					return (new DatePlus)->format('Y-m-d');
+					return (new DatePlus())->format('Y-m-d');
 				}
-				return (new DatePlus)->setTimestamp(strtotime($this->value))->format('Y-m-d');
+				return (new DatePlus())
+					->setTimestamp(strtotime($this->value))
+					->format('Y-m-d');
 			case 'TIME':
 				if ($this->value === 'time') {
-					return (new DatePlus)->toDBTime();
+					return (new DatePlus())->toDBTime();
 				}
-				return (new DatePlus)->setTimestamp(strtotime($this->value))->toDBTime();
+				return (new DatePlus())
+					->setTimestamp(strtotime($this->value))
+					->toDBTime();
 			default:
 				throw new DefaultTypeNotFoundException($this->type);
 		}

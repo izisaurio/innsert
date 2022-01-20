@@ -108,7 +108,8 @@ class UploadFile
 	 */
 	public function rename($name)
 	{
-		$this->name = strpos($name, '.') === false ? "{$name}.{$this->extension}" : $name;
+		$this->name =
+			strpos($name, '.') === false ? "{$name}.{$this->extension}" : $name;
 		$this->updatePath();
 		return $this;
 	}
@@ -123,11 +124,15 @@ class UploadFile
 	public function check()
 	{
 		if (!$this->isOk()) {
-			throw new ControllerControlledException($this->uploader->getError($this->error, $this->sourceName));
+			throw new ControllerControlledException(
+				$this->uploader->getError($this->error, $this->sourceName)
+			);
 		}
 		if (isset($this->uploader->allowedMimes)) {
 			if (!in_array($this->type, $this->uploader->allowedMimes)) {
-				throw new ControllerControlledException($this->uploader->getError('mimes', $this->sourceName));
+				throw new ControllerControlledException(
+					$this->uploader->getError('mimes', $this->sourceName)
+				);
 			}
 		}
 		return $this;
@@ -143,10 +148,14 @@ class UploadFile
 	public function save()
 	{
 		if (!$this->uploader->replace && $this->exists()) {
-			throw new ControllerControlledException($this->uploader->getError('replace', $this->sourceName));
+			throw new ControllerControlledException(
+				$this->uploader->getError('replace', $this->sourceName)
+			);
 		}
 		if (move_uploaded_file($this->tmp_name, $this->path) === false) {
-			throw new ControllerControlledException($this->uploader->getError('save', $this->sourceName));
+			throw new ControllerControlledException(
+				$this->uploader->getError('save', $this->sourceName)
+			);
 		}
 		return $this;
 	}

@@ -32,7 +32,7 @@ class DB
 	public static function defaultInstance()
 	{
 		if (!isset(self::$instance)) {
-			self::$instance = new DBMysql;
+			self::$instance = new DBMysql();
 		}
 		return self::$instance;
 	}

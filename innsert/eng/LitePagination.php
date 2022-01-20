@@ -37,11 +37,11 @@ class LitePagination implements PaginationInterface
 	 * @access	public
 	 * @param	array		$configs	Pagination configs
 	 */
-	public function __construct(array $configs = array())
+	public function __construct(array $configs = [])
 	{
 		$defaults = [
-			'showPerPage'	=>	20,
-			'index'			=>	1
+			'showPerPage' => 20,
+			'index' => 1,
 		];
 		$this->configs = array_merge($defaults, $configs);
 		foreach ($this->configs as $config => $value) {
@@ -57,13 +57,15 @@ class LitePagination implements PaginationInterface
 	 */
 	public function paginate(DBMapper $mapper)
 	{
-		$startPage = ($this->index * $this->showPerPage) - $this->showPerPage;
-		$this->result = $mapper->limit("{$startPage}, {$this->showPerPage}")->find();
+		$startPage = $this->index * $this->showPerPage - $this->showPerPage;
+		$this->result = $mapper
+			->limit("{$startPage}, {$this->showPerPage}")
+			->find();
 	}
 
 	/**
 	 * Returns the result of a serach
-	 * 
+	 *
 	 * @access	public
 	 * @return	Result
 	 */

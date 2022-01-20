@@ -33,9 +33,13 @@ class Jwt
 	 * @access	public
 	 * @return	Builder
 	 */
-	public static function build($secret, array $payload, array $configs = array(), array $header = array())
-	{
-		return new Builder($secret, self::$hash, $payload,  $header, $configs);
+	public static function build(
+		$secret,
+		array $payload,
+		array $configs = [],
+		array $header = []
+	) {
+		return new Builder($secret, self::$hash, $payload, $header, $configs);
 	}
 
 	/**

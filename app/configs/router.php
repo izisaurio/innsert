@@ -5,9 +5,9 @@
  *
  * Router config file
  *
- * @author	izisaurio
- * @package	innsert/framework
- * @version	1
+ * @author  izisaurio
+ * @package innsert/framework
+ * @version 1
  */
 return [
 	'/' => 'start/index',

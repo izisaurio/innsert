@@ -2,8 +2,7 @@
 
 namespace innsert\db;
 
-use innsert\core\Forable,
-	\StdClass;
+use innsert\core\Forable, \StdClass;
 
 /**
  * Innsert PHP MVC Framework
@@ -25,7 +24,7 @@ class Params extends Forable
 	 */
 	public function add($attr, $value)
 	{
-		$param = new StdClass;
+		$param = new StdClass();
 		$param->attr = $attr;
 		$param->value = $value;
 		$this->_items[] = $param;

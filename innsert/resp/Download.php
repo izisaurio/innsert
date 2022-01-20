@@ -36,12 +36,16 @@ class Download extends Response
 	public function __construct($file, $name = null)
 	{
 		if (!file_exists($file)) {
-			return (new RequestError(Lang::defaultInstance()->get('fileNotFound')))->send();
+			return (new RequestError(
+				Lang::defaultInstance()->get('fileNotFound')
+			))->send();
 		}
 		$fileName = isset($name) ? $name : basename($file);
 		$this->header('Content-Type', 'application/octet-stream')
 			->header('Content-Description', 'File Transfer')
-			->header('Content-Disposition', 'attachmen', ['filename' => $fileName])
+			->header('Content-Disposition', 'attachmen', [
+				'filename' => $fileName,
+			])
 			->header('Content-Transfer-Encoding', 'binary')
 			->header('Expires', '0')
 			->header('Cache-Control', 'must-revalidate')
@@ -59,6 +63,6 @@ class Download extends Response
 	{
 		$this->writeHeaders();
 		readfile($this->file);
-		exit;
+		exit();
 	}
 }

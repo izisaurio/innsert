@@ -30,10 +30,10 @@ class Image
 		if ($extension == 'png') {
 			$source = imagecreatefrompng($path);
 			imagepng($source, $destination, $quality);
-		} else if ($extension == 'gif') {
+		} elseif ($extension == 'gif') {
 			$source = imagecreatefromgif($path);
 			imagegif($source, $destination, $quality);
-		} else if ($extension == 'jpg' || $extension == 'jpeg') {
+		} elseif ($extension == 'jpg' || $extension == 'jpeg') {
 			$data = file_get_contents($path);
 			try {
 				$source = imagecreatefromstring($data);
@@ -46,7 +46,6 @@ class Image
 		}
 		return $destination;
 	}
-
 
 	/**
 	 * Resizes an image relative to given with
@@ -61,7 +60,6 @@ class Image
 	{
 		return self::resizeRelative($path, $newWidth, 'width', $extension);
 	}
-
 
 	/**
 	 * Resizes an image relative to given height
@@ -87,24 +85,28 @@ class Image
 	 * @param	string	$extension		Image file eztension
 	 * @return	mixed
 	 */
-	public static function resizeRelative($path, $newSize, $type = 'width', $extension = null)
-	{
+	public static function resizeRelative(
+		$path,
+		$newSize,
+		$type = 'width',
+		$extension = null
+	) {
 		list($w, $h) = getimagesize($path);
 		if ($type == 'width') {
 			$newWidth = $newSize;
-			$newHeight = $newWidth * $h / $w;
+			$newHeight = ($newWidth * $h) / $w;
 		} else {
 			$newHeight = $newSize;
-			$newWidth = $newHeight * $w / $h;
+			$newWidth = ($newHeight * $w) / $h;
 		}
 		if (!isset($extension)) {
 			$extension = pathinfo($path, PATHINFO_EXTENSION);
 		}
 		if ($extension == 'png') {
 			$source = imagecreatefrompng($path);
-		} else if ($extension == 'gif') {
+		} elseif ($extension == 'gif') {
 			$source = imagecreatefromgif($path);
-		} else if ($extension == 'jpg' || $extension == 'jpeg') {
+		} elseif ($extension == 'jpg' || $extension == 'jpeg') {
 			$data = file_get_contents($path);
 			try {
 				$source = imagecreatefromstring($data);
@@ -119,7 +121,18 @@ class Image
 			imagealphablending($resource, false);
 			imagesavealpha($resource, true);
 		}
-		imagecopyresampled($resource, $source, 0, 0, 0, 0, $newWidth, $newHeight, $w, $h);
+		imagecopyresampled(
+			$resource,
+			$source,
+			0,
+			0,
+			0,
+			0,
+			$newWidth,
+			$newHeight,
+			$w,
+			$h
+		);
 		return $resource;
 	}
 
@@ -136,9 +149,9 @@ class Image
 		ob_start();
 		if ($extension == 'png') {
 			imagepng($resource);
-		} else if ($extension == 'gif') {
+		} elseif ($extension == 'gif') {
 			imagegif($resource);
-		} else if ($extension == 'jpg' || $extension == 'jpeg') {
+		} elseif ($extension == 'jpg' || $extension == 'jpeg') {
 			imagejpeg($resource);
 		}
 		$data = ob_get_contents();
@@ -156,14 +169,24 @@ class Image
 	 * @param	int			$quality		Image quality
 	 * @return	bool
 	 */
-	public static function resourceToFile($resource, $extension, $destination, $quality = null)
-	{
+	public static function resourceToFile(
+		$resource,
+		$extension,
+		$destination,
+		$quality = null
+	) {
 		if ($extension == 'png') {
-			return isset($quality) ? imagepng($resource, $destination, $quality) : imagepng($resource, $destination);
-		} else if ($extension == 'gif') {
-			return isset($quality) ? imagegif($resource, $destination, $quality) : imagegif($resource, $destination);
-		} else if ($extension == 'jpg' || $extension == 'jpeg') {
-			return isset($quality) ? imagejpeg($resource, $destination, $quality) : imagejpeg($resource, $destination);
+			return isset($quality)
+				? imagepng($resource, $destination, $quality)
+				: imagepng($resource, $destination);
+		} elseif ($extension == 'gif') {
+			return isset($quality)
+				? imagegif($resource, $destination, $quality)
+				: imagegif($resource, $destination);
+		} elseif ($extension == 'jpg' || $extension == 'jpeg') {
+			return isset($quality)
+				? imagejpeg($resource, $destination, $quality)
+				: imagejpeg($resource, $destination);
 		}
 		return false;
 	}

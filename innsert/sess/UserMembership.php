@@ -2,8 +2,7 @@
 
 namespace innsert\sess;
 
-use innsert\lib\Request,
-	innsert\core\Defaults;
+use innsert\lib\Request, innsert\core\Defaults;
 
 /**
  * Innsert PHP MVC Framework

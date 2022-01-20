@@ -2,8 +2,7 @@
 
 namespace innsert\sess;
 
-use innsert\core\ArrayLike,
-	innsert\lib\Request;
+use innsert\core\ArrayLike, innsert\lib\Request;
 
 /**
  * Innsert PHP MVC Framework
@@ -75,9 +74,16 @@ class Session extends ArrayLike
 	{
 		if (session_status() == PHP_SESSION_NONE) {
 			if (!isset($this->secure)) {
-				$this->secure = Request::defaultInstance()->server('HTTPS', 'off') === 'on';
+				$this->secure =
+					Request::defaultInstance()->server('HTTPS', 'off') === 'on';
 			}
-			session_set_cookie_params($this->lifetime, $this->path, $this->domain, $this->secure, $this->httponly);
+			session_set_cookie_params(
+				$this->lifetime,
+				$this->path,
+				$this->domain,
+				$this->secure,
+				$this->httponly
+			);
 			session_name('INNSERTFRAMEWORKSESS');
 			session_start();
 		}
@@ -87,7 +93,7 @@ class Session extends ArrayLike
 		if (!isset($_SESSION[$this->namespace])) {
 			$_SESSION[$this->namespace] = [];
 		}
-        $this->_items = $_SESSION[$this->namespace];
+		$this->_items = $_SESSION[$this->namespace];
 	}
 
 	/**
@@ -112,19 +118,20 @@ class Session extends ArrayLike
 		$_SESSION[$this->namespace] = $this->_items;
 	}
 
-    /**
-     * Add and item to session
-     * 
-     * @access	public
+	/**
+	 * Add and item to session
+	 *
+	 * @access	public
 	 * @param	mixed	$key	Session key
 	 * @param	mixed	$value	Key value
-     */
-    public function offsetSet($key, $value) {
-        parent::offsetSet($key, $value);
-        $this->updateSessionArray();
-    }
+	 */
+	public function offsetSet($key, $value)
+	{
+		parent::offsetSet($key, $value);
+		$this->updateSessionArray();
+	}
 
-    /**
+	/**
 	 * Unset session item by key
 	 *
 	 * @access	public
@@ -133,7 +140,7 @@ class Session extends ArrayLike
 	public function offsetUnset($key)
 	{
 		parent::offsetUnset($key);
-        $this->updateSessionArray();
+		$this->updateSessionArray();
 	}
 
 	/**
@@ -175,7 +182,7 @@ class Session extends ArrayLike
 
 	/**
 	 * Destroys current session
-	 * 
+	 *
 	 * @access	public
 	 */
 	public function destroy()

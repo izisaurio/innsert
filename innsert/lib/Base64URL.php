@@ -23,7 +23,11 @@ class Base64URL
 	 */
 	public static function encode($text)
 	{
-		return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($text));
+		return str_replace(
+			['+', '/', '='],
+			['-', '_', ''],
+			base64_encode($text)
+		);
 	}
 
 	/**

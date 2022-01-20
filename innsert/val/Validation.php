@@ -2,9 +2,7 @@
 
 namespace innsert\val;
 
-use innsert\core\ErrorManager,
-	innsert\mvc\Model,
-	innsert\lang\Lang;
+use innsert\core\ErrorManager, innsert\mvc\Model, innsert\lang\Lang;
 
 /**
  * Innsert PHP MVC Framework
@@ -43,27 +41,19 @@ class Validation extends ErrorManager
 
 	/**
 	 * Classes with validations
-	 * 
+	 *
 	 * @access	protected
 	 * @var		array
 	 */
-	protected $plugins = [
-		'innsert\\val\\Rules'
-	];
+	protected $plugins = ['innsert\\val\\Rules'];
 
 	/**
 	 * Keys to ignore in rules
-	 * 
+	 *
 	 * @access	protected
 	 * @var		array
 	 */
-	protected $ignore = [
-		'OPTIONAL',
-		'DEFAULT',
-		'UNION',
-		'CLASS',
-		'ALIAS'
-	];
+	protected $ignore = ['OPTIONAL', 'DEFAULT', 'UNION', 'CLASS', 'ALIAS'];
 
 	/**
 	 * All validation methods
@@ -97,7 +87,7 @@ class Validation extends ErrorManager
 
 	/**
 	 * Checks validations
-	 * 
+	 *
 	 * @access	public
 	 * @return	bool
 	 */
@@ -109,14 +99,21 @@ class Validation extends ErrorManager
 				continue;
 			}
 			$value = isset($model[$key]) ? trim($model[$key]) : '';
-			if ($value === '' && !array_key_exists('OPTIONAL', $rules) && !array_key_exists('DEFAULT', $rules)) {
+			if (
+				$value === '' &&
+				!array_key_exists('OPTIONAL', $rules) &&
+				!array_key_exists('DEFAULT', $rules)
+			) {
 				$this->addError('REQUIRED', [$this->ruleKeyAlias($key)]);
 				continue;
 			}
 			foreach ($rules as $rule => $data) {
 				if (!in_array($rule, $this->ignore)) {
 					if (!array_key_exists($rule, $this->methods)) {
-						throw new RuleDoesNotExistException($rule, join(', ', array_unique($this->methods)));
+						throw new RuleDoesNotExistException(
+							$rule,
+							join(', ', array_unique($this->methods))
+						);
 					}
 					$class = $this->methods[$rule];
 					$complement = $data;
@@ -130,7 +127,10 @@ class Validation extends ErrorManager
 						$parameters = [$value, $data];
 					}
 					if (!call_user_func_array([$class, $rule], $parameters)) {
-						$this->addError($rule, [$this->ruleKeyAlias($key), $complement]);
+						$this->addError($rule, [
+							$this->ruleKeyAlias($key),
+							$complement,
+						]);
 					}
 				}
 			}
@@ -140,7 +140,7 @@ class Validation extends ErrorManager
 
 	/**
 	 * Gets the key alias, if none returns key name
-	 * 
+	 *
 	 * @access	protected
 	 * @param	string	$key	Model key to get alias from
 	 * @return	string
@@ -153,7 +153,8 @@ class Validation extends ErrorManager
 		if (!isset($this->rules[$key]['ALIAS'])) {
 			return ucfirst($key);
 		}
-		return !is_array($this->rules[$key]['ALIAS']) ? $this->rules[$key]['ALIAS'] :
-			$this->rules[$key]['ALIAS'][Lang::defaultInstance()->locale];
+		return !is_array($this->rules[$key]['ALIAS'])
+			? $this->rules[$key]['ALIAS']
+			: $this->rules[$key]['ALIAS'][Lang::defaultInstance()->locale];
 	}
 }

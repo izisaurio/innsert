@@ -64,9 +64,10 @@ class View
 	 * @param	array	$items	Items from controller
 	 * @throws	TemplateNotFoundException
 	 */
-	public function __construct(array $path, array $items = array())
+	public function __construct(array $path, array $items = [])
 	{
-		$this->fullPath = join(DS, array_merge(['public', 'views'], $path)) . EXT;
+		$this->fullPath =
+			join(DS, array_merge(['public', 'views'], $path)) . EXT;
 		if (!file_exists($this->fullPath)) {
 			throw new TemplateNotFoundException($this->fullPath);
 		}
@@ -115,7 +116,7 @@ class View
 	 */
 	public function import(array $path, array $items = null)
 	{
-		$import = new self($path, (isset($items) ? $items : $this->items));
+		$import = new self($path, isset($items) ? $items : $this->items);
 		$import->render();
 		return $import;
 	}

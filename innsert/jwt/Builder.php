@@ -19,7 +19,7 @@ class Builder
 	 * Token header
 	 *
 	 * @access	private
-	 * @var		array	
+	 * @var		array
 	 */
 	private $header;
 
@@ -66,10 +66,10 @@ class Builder
 	 * @var		array
 	 */
 	protected $configs = [
-		'jsonTokenId'			=>	'n/a',
-		'issuer'				=>	'innsert',
-		'notBeforeInSeconds'	=>	1,
-		'expiresInSeconds'		=>	0
+		'jsonTokenId' => 'n/a',
+		'issuer' => 'innsert',
+		'notBeforeInSeconds' => 1,
+		'expiresInSeconds' => 0,
 	];
 
 	/**
@@ -90,19 +90,27 @@ class Builder
 	 * @param	array	$configs	Token configs (appended to payload)
 	 * @param	array	$header		Token header
 	 */
-	public function __construct($secret, array $hash, array $payload, array $configs = array(), array $header = array())
-	{
+	public function __construct(
+		$secret,
+		array $hash,
+		array $payload,
+		array $configs = [],
+		array $header = []
+	) {
 		$this->secret = $secret;
 		$this->hash = $hash;
-		$this->header = array_merge($header, ['typ' => 'JWT', 'alg' => $this->hash[1]]);
+		$this->header = array_merge($header, [
+			'typ' => 'JWT',
+			'alg' => $this->hash[1],
+		]);
 		$this->configs = array_merge($this->configs, $configs);
 		$time = time();
 		$content = [
-			'jti'	=>	$this->configs['jsonTokenId'],
-			'iss'	=>	$this->configs['issuer'],
-			'iat'	=>	$time,
-			'nbf'	=>	$time + $this->configs['notBeforeInSeconds'],
-			'data'	=>	$payload
+			'jti' => $this->configs['jsonTokenId'],
+			'iss' => $this->configs['issuer'],
+			'iat' => $time,
+			'nbf' => $time + $this->configs['notBeforeInSeconds'],
+			'data' => $payload,
 		];
 		if ($this->configs['expiresInSeconds'] > 0) {
 			$content['exp'] = $time + $this->configs['expiresInSeconds'];
@@ -121,7 +129,10 @@ class Builder
 	{
 		$header = Base64URL::encode(json_encode($this->header));
 		$payload = Base64URL::encode(json_encode($this->payload));
-		$signature = $this->signature = $this->buildSignature($header, $payload);
+		$signature = $this->signature = $this->buildSignature(
+			$header,
+			$payload
+		);
 		return "{$header}.{$payload}.{$signature}";
 	}
 
@@ -135,7 +146,12 @@ class Builder
 	 */
 	private function buildSignature($base64URLHeader, $base64URLPayload)
 	{
-		$signature = hash_hmac($this->hash[0], "{$base64URLHeader}.{$base64URLPayload}", $this->secret, true);
+		$signature = hash_hmac(
+			$this->hash[0],
+			"{$base64URLHeader}.{$base64URLPayload}",
+			$this->secret,
+			true
+		);
 		return Base64URL::encode($signature);
 	}
 

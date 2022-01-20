@@ -36,7 +36,7 @@ class Collection extends Forable
 	{
 		if (is_array($data)) {
 			$this->_items = $data;
-		} else if (is_object($data)) {
+		} elseif (is_object($data)) {
 			$this->_items = get_object_vars($data);
 		} else {
 			throw new ParamTypeException(gettype($data), 'array|object', $data);
@@ -80,9 +80,14 @@ class Collection extends Forable
 	{
 		$results = [];
 		foreach ($this->_items as $key => $value) {
-			$columnKey = (isset($index) && is_array($value) && isset($value[$index])) ? $value[$index] : $key;
-			$results[$columnKey] = (!is_array($value) || !array_key_exists($column, $value)) ?
-				'' : $value[$column];
+			$columnKey =
+				isset($index) && is_array($value) && isset($value[$index])
+					? $value[$index]
+					: $key;
+			$results[$columnKey] =
+				!is_array($value) || !array_key_exists($column, $value)
+					? ''
+					: $value[$column];
 		}
 		return $results;
 	}

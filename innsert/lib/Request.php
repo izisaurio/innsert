@@ -32,7 +32,7 @@ class Request
 	public static function defaultInstance()
 	{
 		if (!isset(self::$instance)) {
-			self::$instance = new HttpRequest;
+			self::$instance = new HttpRequest();
 		}
 		return self::$instance;
 	}

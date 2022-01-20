@@ -2,8 +2,7 @@
 
 namespace innsert\views;
 
-use innsert\lib\Url,
-	innsert\lib\Collection;
+use innsert\lib\Url, innsert\lib\Collection;
 
 /**
  * Innsert PHP MVC Framework
@@ -92,18 +91,21 @@ class Headers
 						if (strpos($value, ':') === false) {
 							$value = (new Url([$value]))->make();
 						}
-						$this->results[$type][] = '<link rel="stylesheet" href="' . $value . '" />';
+						$this->results[$type][] =
+							'<link rel="stylesheet" href="' . $value . '" />';
 						break;
 
 					case 'js':
 						if (strpos($value, ':') === false) {
 							$value = (new Url([$value]))->make();
 						}
-						$this->results[$type][] = '<script src="' . $value . '" ></script>';
+						$this->results[$type][] =
+							'<script src="' . $value . '" ></script>';
 						break;
 
 					case 'title':
-						$this->results[$type][] = '<title>' . $value . '</title>';
+						$this->results[$type][] =
+							'<title>' . $value . '</title>';
 						break;
 
 					case 'meta':
@@ -118,7 +120,10 @@ class Headers
 						if (strpos($value, ':') === false) {
 							$value = (new Url([$value]))->make();
 						}
-						$this->results[$type][] = '<link rel="shortcut icon" href="' . $value . '" />';
+						$this->results[$type][] =
+							'<link rel="shortcut icon" href="' .
+							$value .
+							'" />';
 						break;
 				}
 			}
@@ -133,7 +138,7 @@ class Headers
 	 * @param	array	$only	If you want to write only some some types of elements
 	 * @return	string
 	 */
-	public function get(array $only = array())
+	public function get(array $only = [])
 	{
 		$tags = '';
 		foreach ($this->results as $type => $result) {

@@ -29,7 +29,11 @@ class Log
 		if (!file_exists($file)) {
 			throw new LogFileNotFoundException($file);
 		}
-		file_put_contents($file, $message . ' :: ' . date('r') . PHP_EOL, FILE_APPEND);
+		file_put_contents(
+			$file,
+			$message . ' :: ' . date('r') . PHP_EOL,
+			FILE_APPEND
+		);
 	}
 
 	/**

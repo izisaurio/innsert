@@ -2,8 +2,7 @@
 
 namespace innsert\db;
 
-use innsert\core\Log,
-	\Exception;
+use innsert\core\Log, \Exception;
 
 /**
  * Innsert PHP MVC Framework
@@ -25,7 +24,9 @@ class DatabaseStatementException extends Exception
 	 */
 	public function __construct($message, $query)
 	{
-		parent::__construct("Error in sentence (Err: {$message}) - (Query: {$query})");
+		parent::__construct(
+			"Error in sentence (Err: {$message}) - (Query: {$query})"
+		);
 		Log::add('database', $this->getMessage());
 	}
 }

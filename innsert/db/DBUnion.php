@@ -59,9 +59,11 @@ class DBUnion extends SqlSentence
 		$data = $this->getData($model);
 		$this->where($data->this->key, $model->id);
 		$this->db->execute($this->buildDelete());
-		$this->db->prepareStatement($this->buildInsert([$data->this->key, $data->union->key]));
+		$this->db->prepareStatement(
+			$this->buildInsert([$data->this->key, $data->union->key])
+		);
 		foreach ($values as $value) {
-			$params = new Params;
+			$params = new Params();
 			$params->add('INT', $model->id);
 			$params->add('INT', $value);
 			$this->db->bindParams($params);
@@ -79,9 +81,16 @@ class DBUnion extends SqlSentence
 	public function findUnion(DBModel $model)
 	{
 		$data = $this->getData($model);
-		$this->join($this->table, $data->union->key, '=', "{$data->union->table}.{$data->union->id}")
-			->where($data->this->key, $model->id);
-		return (new Result($this->db->search($this->buildSelect()), $model->getMapper()))->all();
+		$this->join(
+			$this->table,
+			$data->union->key,
+			'=',
+			"{$data->union->table}.{$data->union->id}"
+		)->where($data->this->key, $model->id);
+		return (new Result(
+			$this->db->search($this->buildSelect()),
+			$model->getMapper()
+		))->all();
 	}
 
 	/**
@@ -94,10 +103,11 @@ class DBUnion extends SqlSentence
 	public function findUnionIds(DBModel $model)
 	{
 		$data = $this->getData($model);
-		$this->select([$data->union->key])
-			->where($data->this->key, $model->id);
-		return (new Result($this->db->search($this->buildSelect()), $model->getMapper()))
-			->column($data->union->key);
+		$this->select([$data->union->key])->where($data->this->key, $model->id);
+		return (new Result(
+			$this->db->search($this->buildSelect()),
+			$model->getMapper()
+		))->column($data->union->key);
 	}
 
 	/**
@@ -121,7 +131,10 @@ class DBUnion extends SqlSentence
 	public function deleteValue(DBModel $model, $value)
 	{
 		$data = $this->getData($model);
-		$this->where($data->this->key, $model->id)->where($data->union->key, $value);
+		$this->where($data->this->key, $model->id)->where(
+			$data->union->key,
+			$value
+		);
 		$this->db->execute($this->buildDelete());
 	}
 
@@ -137,16 +150,16 @@ class DBUnion extends SqlSentence
 		$table = $model->getMapper()->table;
 		foreach ($this->properties as $key => $values) {
 			if ($key != $table) {
-				$data = new stdClass;
-				$data->this = (object)[
-					'table'	=>	$table,
-					'key'	=>	$this->properties[$table]['key'],
-					'id'	=>	$this->properties[$table]['id']
+				$data = new stdClass();
+				$data->this = (object) [
+					'table' => $table,
+					'key' => $this->properties[$table]['key'],
+					'id' => $this->properties[$table]['id'],
 				];
-				$data->union = (object)[
-					'table'	=>	$key,
-					'key'	=>	$values['key'],
-					'id'	=>	$values['id']
+				$data->union = (object) [
+					'table' => $key,
+					'key' => $values['key'],
+					'id' => $values['id'],
 				];
 				return $data;
 			}
@@ -162,6 +175,8 @@ class DBUnion extends SqlSentence
 	 */
 	protected function clean($value)
 	{
-		return (!is_numeric($value) && $value !== '?') ? $this->db->clean($value) : $value;
+		return !is_numeric($value) && $value !== '?'
+			? $this->db->clean($value)
+			: $value;
 	}
 }

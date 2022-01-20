@@ -73,11 +73,13 @@ class Authentication
 	 * Simple validation, use DBAuthentication or extend to create your own
 	 *
 	 * @access	public
-	 * @return	bool	
+	 * @return	bool
 	 */
 	public function validate()
 	{
-		return isset($this->model) && $this->model instanceof AuthModel && isset($this->data);
+		return isset($this->model) &&
+			$this->model instanceof AuthModel &&
+			isset($this->data);
 	}
 
 	/**

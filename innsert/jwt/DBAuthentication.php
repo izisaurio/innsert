@@ -92,20 +92,30 @@ class DBAuthentication extends Authentication
 	 */
 	public function validate()
 	{
-		$params = new Params;
+		$params = new Params();
 		$params->add('STRING', $this->username);
-		$user = $this->mapper->where($this->column, '?')->limit(1)->find($params)->first();
+		$user = $this->mapper
+			->where($this->column, '?')
+			->limit(1)
+			->find($params)
+			->first();
 		if (!$user) {
 			return false;
 		}
-		$now = (new DateTime)->add(new DateInterval('PT15S'));
+		$now = (new DateTime())->add(new DateInterval('PT15S'));
 		$try = DateTime::createFromFormat('YmdHis', $user->intento);
 		if ($try > $now) {
-			$user->intento = (new DateTime)->format('YmdHis');
+			$user->intento = (new DateTime())->format('YmdHis');
 			$user->save(false);
 			return false;
 		}
-		if (!StringFunctions::validatePassword($this->password, $user->{$this->saltProperty}, $user->{$this->passProperty})) {
+		if (
+			!StringFunctions::validatePassword(
+				$this->password,
+				$user->{$this->saltProperty},
+				$user->{$this->passProperty}
+			)
+		) {
 			return false;
 		}
 		$this->setModel($user);

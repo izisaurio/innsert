@@ -61,12 +61,12 @@ abstract class ServerSideEvent
 		$loop = true;
 		while ($loop) {
 			if (connection_aborted()) {
-				exit;
+				exit();
 			}
 			$loop = $this->loop($event);
 			sleep($this->time);
 		}
-		exit;
+		exit();
 	}
 
 	/**

@@ -2,8 +2,7 @@
 
 namespace innsert\db;
 
-use innsert\core\Log,
-	\Exception;
+use innsert\core\Log, \Exception;
 
 /**
  * Innsert PHP MVC Framework
@@ -24,7 +23,9 @@ class DatabaseConnectException extends Exception
 	 */
 	public function __construct($code)
 	{
-		parent::__construct("A connection could not be established to the database (Err: {$code})");
+		parent::__construct(
+			"A connection could not be established to the database (Err: {$code})"
+		);
 		Log::add('database', $this->getMessage());
 	}
 }

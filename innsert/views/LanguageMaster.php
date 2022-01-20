@@ -40,8 +40,11 @@ class LanguageMaster extends LanguageView
 	 * @param	array	$only		If you want to write only some some types of elements
 	 * @return	string
 	 */
-	public function getAllHeaders(array $headers = array(), array $only = array())
+	public function getAllHeaders(array $headers = [], array $only = [])
 	{
-		return (new Headers($this->headers))->prepend($headers)->parse()->get($only);
+		return (new Headers($this->headers))
+			->prepend($headers)
+			->parse()
+			->get($only);
 	}
 }

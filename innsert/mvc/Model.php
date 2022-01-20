@@ -2,8 +2,7 @@
 
 namespace innsert\mvc;
 
-use innsert\val\Validation,
-	innsert\lib\Collection;
+use innsert\val\Validation, innsert\lib\Collection;
 
 /**
  * Innsert PHP MVC Framework
@@ -38,7 +37,9 @@ class Model
 		$this->setDefaultValues($rules);
 		$validation = new Validation($this, $rules);
 		if (!$validation->check()) {
-			throw new ControllerControlledException(join($join, $validation->errors));
+			throw new ControllerControlledException(
+				join($join, $validation->errors)
+			);
 		}
 		return $this;
 	}
@@ -49,11 +50,18 @@ class Model
 	 * @access	public
 	 * @param	array	$rules		Model rules
 	 */
-	public function setDefaultValues(array $rules = array())
+	public function setDefaultValues(array $rules = [])
 	{
 		foreach ($rules as $property => $rule) {
-			if (is_array($rule) && array_key_exists('DEFAULT', $rule) && !isset($this->{$property})) {
-				$this->{$property} = (new DefaultValue($this, $rule['DEFAULT']))->get();
+			if (
+				is_array($rule) &&
+				array_key_exists('DEFAULT', $rule) &&
+				!isset($this->{$property})
+			) {
+				$this->{$property} = (new DefaultValue(
+					$this,
+					$rule['DEFAULT']
+				))->get();
 			}
 		}
 	}

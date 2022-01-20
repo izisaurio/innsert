@@ -13,13 +13,13 @@ namespace innsert\resp;
  */
 class EmptyResponse extends Response
 {
-    /**
-     * Response code set to 418 (Im a teapot)
-     * 
-     * @access  public
-     * @var     int
-     */
-    public $code = 418;
+	/**
+	 * Response code set to 418 (Im a teapot)
+	 *
+	 * @access  public
+	 * @var     int
+	 */
+	public $code = 418;
 
 	/**
 	 * Constructor

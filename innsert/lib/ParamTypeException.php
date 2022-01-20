@@ -25,6 +25,8 @@ class ParamTypeException extends Exception
 	 */
 	public function __construct($typeReceived, $typeExpected, $param)
 	{
-		parent::__construct("Param error: expected ({$typeExpected}) - recieved ({$typeReceived}) - param ({$param})");
+		parent::__construct(
+			"Param error: expected ({$typeExpected}) - recieved ({$typeReceived}) - param ({$param})"
+		);
 	}
 }

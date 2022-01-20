@@ -22,13 +22,13 @@ class ErrorResponse extends Response
 	 * @var		array
 	 */
 	public $path = ['_extra', 'PageNotFound'];
-	
+
 	/**
-	* Response code
-	*
-	* @access	public
-	* @var		int
-	*/
+	 * Response code
+	 *
+	 * @access	public
+	 * @var		int
+	 */
 	public $code = 404;
 
 	/**
@@ -41,7 +41,7 @@ class ErrorResponse extends Response
 
 	/**
 	 * Message to append to error
-	 * 
+	 *
 	 * @access	protected
 	 * @var		string
 	 */

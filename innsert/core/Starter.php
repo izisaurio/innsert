@@ -21,7 +21,7 @@ class Starter
 {
 	/**
 	 * DefaultConfigs instance
-	 * 
+	 *
 	 * @access	public
 	 * @var		DefaultConfig
 	 */
@@ -45,7 +45,7 @@ class Starter
 
 	/**
 	 * Response to send back
-	 * 
+	 *
 	 * @access	public
 	 * @var		Response
 	 */
@@ -74,7 +74,7 @@ class Starter
 
 	/**
 	 * Defines the start file path
-	 * 
+	 *
 	 * @param	string	$file	Starter file
 	 * @access	private
 	 */
@@ -83,14 +83,17 @@ class Starter
 		$attrs = pathinfo($file);
 		define('EXT', '.' . $attrs['extension']);
 		define('SCRIPT', $attrs['basename']);
-		$directory = dirname(substr($file, strlen($this->request->server('DOCUMENT_ROOT'))));
-		$path = $directory === '/' ? US : str_replace('\\', US, $directory) . US;
+		$directory = dirname(
+			substr($file, strlen($this->request->server('DOCUMENT_ROOT')))
+		);
+		$path =
+			$directory === '/' ? US : str_replace('\\', US, $directory) . US;
 		define('PATH', $path);
 	}
 
 	/**
 	 * Defines main constants
-	 * 
+	 *
 	 * @access	private
 	 */
 	private function setEnvironmentValues()
@@ -112,15 +115,20 @@ class Starter
 	public function load()
 	{
 		if ($this->router->noRouteMatch) {
-			$this->response = new ErrorResponse("Route Not Found [{$this->router->route}]");
+			$this->response = new ErrorResponse(
+				"Route Not Found [{$this->router->route}]"
+			);
 			return $this;
 		}
-		$class = 'app\controllers\\' . join('\\', $this->router->controller) . 'Controller';
+		$class =
+			'app\controllers\\' .
+			join('\\', $this->router->controller) .
+			'Controller';
 		if (!class_exists($class)) {
 			$this->response = new ErrorResponse("Class [{$class}] not found");
 			return $this;
 		}
-		$controller = new $class;
+		$controller = new $class();
 		if (method_exists($controller, '_middleware')) {
 			$middlewareResponse = call_user_func([$controller, '_middleware']);
 			if ($middlewareResponse instanceof Response) {
@@ -130,20 +138,26 @@ class Starter
 		}
 		$actionWithMethod = "{$this->request->method}_{$this->router->action}";
 		if (method_exists($controller, $actionWithMethod)) {
-			$this->response = call_user_func_array([$controller, $actionWithMethod], $this->router->params);
-		}
-		elseif (method_exists($controller, $this->router->action)) {
-			$this->response = call_user_func_array([$controller, $this->router->action], $this->router->params);
-		}
-		else {
-			$this->response = new ErrorResponse("Action not found: [{$class}]->[{$this->router->action}]");
+			$this->response = call_user_func_array(
+				[$controller, $actionWithMethod],
+				$this->router->params
+			);
+		} elseif (method_exists($controller, $this->router->action)) {
+			$this->response = call_user_func_array(
+				[$controller, $this->router->action],
+				$this->router->params
+			);
+		} else {
+			$this->response = new ErrorResponse(
+				"Action not found: [{$class}]->[{$this->router->action}]"
+			);
 		}
 		return $this;
 	}
 
 	/**
 	 * Sends response
-	 * 
+	 *
 	 * @access	public
 	 */
 	public function respond()
@@ -151,9 +165,9 @@ class Starter
 		if (!($this->response instanceof Response)) {
 			$this->response = new EmptyResponse('No response generated');
 		}
-        if (!empty($this->defaultConfigs['defaultHeaders'])) {
-            $this->response->headers($this->defaultConfigs['defaultHeaders']);
-        }
+		if (!empty($this->defaultConfigs['defaultHeaders'])) {
+			$this->response->headers($this->defaultConfigs['defaultHeaders']);
+		}
 		$this->response->send();
 	}
 }

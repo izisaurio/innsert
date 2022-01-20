@@ -75,9 +75,13 @@ class CookieDBAuthentication extends Authentication
 		if (!isset($this->cookie[$this->cookieKey])) {
 			return false;
 		}
-		$params = new Params;
+		$params = new Params();
 		$params->add('STRING', $this->cookie[$this->cookieKey]);
-		$user = $this->mapper->where($this->modelSearch, '?')->limit(1)->find($params)->first();
+		$user = $this->mapper
+			->where($this->modelSearch, '?')
+			->limit(1)
+			->find($params)
+			->first();
 		if (!$user) {
 			return false;
 		}

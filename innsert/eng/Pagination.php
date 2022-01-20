@@ -2,8 +2,7 @@
 
 namespace innsert\eng;
 
-use innsert\db\DBMapper,
-	innsert\views\LanguageView;
+use innsert\db\DBMapper, innsert\views\LanguageView;
 
 /**
  * Innsert PHP MVC Framework
@@ -54,14 +53,14 @@ class Pagination implements PaginationInterface
 	 * @access	public
 	 * @param	array		$configs	Pagination configurations
 	 */
-	public function __construct(array $configs = array())
+	public function __construct(array $configs = [])
 	{
 		$defaults = [
-			'showPerPage'	=>	50,
-			'urlBase'		=>	'/',
-			'urlParams'		=>	[],
-			'index'			=>	1,
-			'view'			=>	['_extra', 'defaultPagination']
+			'showPerPage' => 50,
+			'urlBase' => '/',
+			'urlParams' => [],
+			'index' => 1,
+			'view' => ['_extra', 'defaultPagination'],
 		];
 		$this->configs = array_merge($defaults, $configs);
 		foreach ($this->configs as $config => $value) {
@@ -81,13 +80,15 @@ class Pagination implements PaginationInterface
 		$counter->select = [];
 		$this->counted = $counter->count();
 		$this->totalPages = max(ceil($this->counted / $this->showPerPage), 1);
-		$startPage = ($this->index * $this->showPerPage) - $this->showPerPage;
-		$this->result = $mapper->limit("{$startPage}, {$this->showPerPage}")->find();
+		$startPage = $this->index * $this->showPerPage - $this->showPerPage;
+		$this->result = $mapper
+			->limit("{$startPage}, {$this->showPerPage}")
+			->find();
 	}
 
 	/**
 	 * Returns the result of a serach
-	 * 
+	 *
 	 * @access	public
 	 * @return	Result
 	 */

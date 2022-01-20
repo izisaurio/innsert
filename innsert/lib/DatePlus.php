@@ -2,9 +2,7 @@
 
 namespace innsert\lib;
 
-use \Datetime,
-	\DateTimeZone,
-	innsert\lang\Lang;
+use \Datetime, \DateTimeZone, innsert\lang\Lang;
 
 /**
  * Innsert PHP MVC Framework
@@ -29,8 +27,12 @@ class DatePlus extends Datetime
 	 */
 	public static function createFromFormat($format, $time, $timezone = null)
 	{
-		$date = isset($timezone) ? date_create_from_format($format, $time, $timezone) : date_create_from_format($format, $time);
-		return $date === false ? new NullDatePlus : (new self)->setTimestamp($date->getTimestamp());
+		$date = isset($timezone)
+			? date_create_from_format($format, $time, $timezone)
+			: date_create_from_format($format, $time);
+		return $date === false
+			? new NullDatePlus()
+			: (new self())->setTimestamp($date->getTimestamp());
 	}
 
 	/**
@@ -44,10 +46,16 @@ class DatePlus extends Datetime
 	 * @param	DateTimeZone	$timezone	Timezone to use
 	 * @return	DatePlus
 	 */
-	public static function createFromFormatWithDefault($format, $time, $default = null, $timezone = null)
-	{
+	public static function createFromFormatWithDefault(
+		$format,
+		$time,
+		$default = null,
+		$timezone = null
+	) {
 		$date = self::createFromFormat($format, $time, $timezone);
-		return ($date instanceof NullDatePlus && isset($default)) ? $default : $date;
+		return $date instanceof NullDatePlus && isset($default)
+			? $default
+			: $date;
 	}
 
 	/**
@@ -61,9 +69,18 @@ class DatePlus extends Datetime
 	 * @param	DateTimeZone	$timezone	Timezone to use
 	 * @return	DatePlus
 	 */
-	public static function createFromPost($name, $format, $default = null, $timezone = null)
-	{
-		return self::createFromFormatWithDefault($format, Request::defaultInstance()->post($name), $default, $timezone);
+	public static function createFromPost(
+		$name,
+		$format,
+		$default = null,
+		$timezone = null
+	) {
+		return self::createFromFormatWithDefault(
+			$format,
+			Request::defaultInstance()->post($name),
+			$default,
+			$timezone
+		);
 	}
 
 	/**
@@ -77,9 +94,18 @@ class DatePlus extends Datetime
 	 * @param	DateTimeZone	$timezone	Timezone to use
 	 * @return	DatePlus
 	 */
-	public static function createFromGet($name, $format, $default = null, $timezone = null)
-	{
-		return self::createFromFormatWithDefault($format, Request::defaultInstance()->get($name), $default, $timezone);
+	public static function createFromGet(
+		$name,
+		$format,
+		$default = null,
+		$timezone = null
+	) {
+		return self::createFromFormatWithDefault(
+			$format,
+			Request::defaultInstance()->get($name),
+			$default,
+			$timezone
+		);
 	}
 
 	/**

@@ -15,7 +15,8 @@ use innsert\mvc\Controller,
  * @author	isaac
  * @version	1
  */
-class MainController extends Controller{
+class MainController extends Controller
+{
 	/**
 	 * Objeto del lenguaje
 	 *
@@ -50,7 +51,7 @@ class MainController extends Controller{
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Importa la clase de lenguaje y de membresía
 	 *
 	 * @access	public
@@ -58,22 +59,27 @@ class MainController extends Controller{
 	public function __construct()
 	{
 		parent::__construct();
-		$this->items = new stdClass;
+		$this->items = new stdClass();
 		$this->lang = Lang::defaultInstance();
-		$this->membership = (new Membership($this->jwtSecret, $this->request->apacheHeader('authorization'), new Payload($this->payloadSecret)))
-			->setNotAuthorizedResponse($this->json(['status' => 'SESSION', 'message' => 'Unauthorized']));
+		$this->membership = (new Membership(
+			$this->jwtSecret,
+			$this->request->apacheHeader('authorization'),
+			new Payload($this->payloadSecret)
+		))->setNotAuthorizedResponse(
+			$this->json(['status' => 'SESSION', 'message' => 'Unauthorized'])
+		);
 	}
 
 	/**
 	 * OPTION check para cors
-	 * 
+	 *
 	 * @access	public
 	 * @return	JsonResponse
 	 */
 	public function _middleware()
 	{
 		if ($this->request->method === 'OPTIONS') {
-			return new HeadersOnlyResponse;
+			return new HeadersOnlyResponse();
 		}
 	}
 
@@ -90,13 +96,13 @@ class MainController extends Controller{
 
 	/**
 	 * Develve el contenido de una vista como texto (Para correos principalmente)
-	 * 
+	 *
 	 * @access	protected
 	 * @param	array		$path	El path donde se encuentra la vista
 	 * @param	array		$items	Los elementos a usar en la vista
 	 * @return	string
 	 */
-	protected function renderView(array $path, array $items = array())
+	protected function renderView(array $path, array $items = [])
 	{
 		$view = new LanguageView($path, $items);
 		$view->render();

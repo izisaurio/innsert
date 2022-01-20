@@ -32,7 +32,7 @@ class Lang
 	public static function defaultInstance()
 	{
 		if (!isset(self::$instance)) {
-			self::$instance = new Language;
+			self::$instance = new Language();
 		}
 		return self::$instance;
 	}

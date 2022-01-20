@@ -2,8 +2,7 @@
 
 namespace innsert\db;
 
-use innsert\lib\Collection,
-	innsert\mvc\ControllerControlledException;
+use innsert\lib\Collection, innsert\mvc\ControllerControlledException;
 
 /**
  * Innsert PHP MVC Framework
@@ -72,11 +71,13 @@ abstract class DBMapper extends SqlSentence
 	 * @param	array	$rules		Foreign table unions
 	 * @return	SqlSentence
 	 */
-	public function select($select, array $rules = array())
+	public function select($select, array $rules = [])
 	{
 		if (empty($rules)) {
 			if (empty($this->unions)) {
-				$this->unions = (new Collection($this->properties))->column('UNION');
+				$this->unions = (new Collection($this->properties))->column(
+					'UNION'
+				);
 			}
 			$rules = $this->unions;
 		}
@@ -95,7 +96,10 @@ abstract class DBMapper extends SqlSentence
 		if (empty($this->select)) {
 			$this->select('*');
 		}
-		return new Result($this->db->search($this->buildSelect(), $params), $this);
+		return new Result(
+			$this->db->search($this->buildSelect(), $params),
+			$this
+		);
 	}
 
 	/**
@@ -107,7 +111,10 @@ abstract class DBMapper extends SqlSentence
 	 */
 	public function findId($id)
 	{
-		return $this->where($this->primary, $id)->limit(1)->find()->first();
+		return $this->where($this->primary, $id)
+			->limit(1)
+			->find()
+			->first();
 	}
 
 	/**
@@ -120,7 +127,10 @@ abstract class DBMapper extends SqlSentence
 	 */
 	public function findIdOrFail($id, $error = null)
 	{
-		return $this->where($this->primary, $id)->limit(1)->find()->firstOrFail($error);
+		return $this->where($this->primary, $id)
+			->limit(1)
+			->find()
+			->firstOrFail($error);
 	}
 
 	/**
@@ -135,15 +145,21 @@ abstract class DBMapper extends SqlSentence
 	{
 		$this->reset();
 		$values = $model->toArray();
-		$params = new Params;
+		$params = new Params();
 		foreach ($this->properties as $property => $options) {
-			if (!array_key_exists($property, $values) && $property != $this->primary) {
+			if (
+				!array_key_exists($property, $values) &&
+				$property != $this->primary
+			) {
 				throw new PropertyNotFoundException($this->table, $property);
 			}
 			$class = is_array($options) ? $options['CLASS'] : $options;
 			$params->add($class, $values[$property]);
 		}
-		$this->db->execute($this->buildInsert(array_keys($this->properties)), $params);
+		$this->db->execute(
+			$this->buildInsert(array_keys($this->properties)),
+			$params
+		);
 		if ($lastId) {
 			$model->id = $this->db->lastId();
 		}
@@ -169,8 +185,11 @@ abstract class DBMapper extends SqlSentence
 	 */
 	public function updateAll(array $data)
 	{
-		$properties = array_intersect(array_keys($this->properties), array_keys($data));
-		$params = new Params;
+		$properties = array_intersect(
+			array_keys($this->properties),
+			array_keys($data)
+		);
+		$params = new Params();
 		foreach ($properties as $property) {
 			$options = $this->properties[$property];
 			$class = is_array($options) ? $options['CLASS'] : $options;
@@ -231,10 +250,14 @@ abstract class DBMapper extends SqlSentence
 	 */
 	public function count(Params $params = null)
 	{
-		$select = empty($this->groupBy) ? 'COUNT( 1 ) AS count' :
-			"COUNT(DISTINCT {$this->table}.{$this->primary}) AS count";
+		$select = empty($this->groupBy)
+			? 'COUNT( 1 ) AS count'
+			: "COUNT(DISTINCT {$this->table}.{$this->primary}) AS count";
 		$this->groupBy = [];
-		$counted = $this->select($select)->limit(1)->find($params)->first();
+		$counted = $this->select($select)
+			->limit(1)
+			->find($params)
+			->first();
 		return isset($counted) ? $counted->count : 0;
 	}
 
@@ -247,8 +270,14 @@ abstract class DBMapper extends SqlSentence
 	 */
 	public function exists(Params $params = null)
 	{
-		$exists = 'SELECT EXISTS (' . $this->select('1')->buildSelect() . ') AS FOUND';
-		return (new Result($this->db->search($exists, $params), $this))->source()[0]['FOUND'];
+		$exists =
+			'SELECT EXISTS (' .
+			$this->select('1')->buildSelect() .
+			') AS FOUND';
+		return (new Result(
+			$this->db->search($exists, $params),
+			$this
+		))->source()[0]['FOUND'];
 	}
 
 	/**
@@ -301,7 +330,9 @@ abstract class DBMapper extends SqlSentence
 	 */
 	protected function clean($value)
 	{
-		return (!is_numeric($value) && $value !== '?') ? $this->db->clean($value) : $value;
+		return !is_numeric($value) && $value !== '?'
+			? $this->db->clean($value)
+			: $value;
 	}
 
 	/**
@@ -312,7 +343,7 @@ abstract class DBMapper extends SqlSentence
 	 */
 	protected function newSelf()
 	{
-		$self = new static;
+		$self = new static();
 		$self->db = $this->db;
 		$self->table = $this->table;
 		return $self;

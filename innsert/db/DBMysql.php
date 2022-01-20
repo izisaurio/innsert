@@ -2,11 +2,7 @@
 
 namespace innsert\db;
 
-use \PDO,
-	\PDOStatement,
-	\PDOException,
-	innsert\core\Config,
-	innsert\core\Log;
+use \PDO, \PDOStatement, \PDOException, innsert\core\Config, innsert\core\Log;
 
 /**
  * Innsert PHP MVC Framework
@@ -66,18 +62,18 @@ class DBMysql extends Config implements DBInterface
 	 * @var		array
 	 */
 	protected $dictionary = [
-		'INT'		=> PDO::PARAM_INT,
-		'NUMERIC'	=> PDO::PARAM_STR,
-		'DECIMAL'	=> PDO::PARAM_STR,
-		'STRING'	=> PDO::PARAM_STR,
-		'TEXT'		=> PDO::PARAM_STR,
-		'ALPHA'		=> PDO::PARAM_STR,
-		'DATETIME'	=> PDO::PARAM_STR,
-		'DATE'		=> PDO::PARAM_STR,
-		'TIME'		=> PDO::PARAM_STR,
-		'TIMESTAMP'	=> PDO::PARAM_INT,
-		'BOOL'		=> PDO::PARAM_BOOL,
-		'EMAIL'		=> PDO::PARAM_STR
+		'INT' => PDO::PARAM_INT,
+		'NUMERIC' => PDO::PARAM_STR,
+		'DECIMAL' => PDO::PARAM_STR,
+		'STRING' => PDO::PARAM_STR,
+		'TEXT' => PDO::PARAM_STR,
+		'ALPHA' => PDO::PARAM_STR,
+		'DATETIME' => PDO::PARAM_STR,
+		'DATE' => PDO::PARAM_STR,
+		'TIME' => PDO::PARAM_STR,
+		'TIMESTAMP' => PDO::PARAM_INT,
+		'BOOL' => PDO::PARAM_BOOL,
+		'EMAIL' => PDO::PARAM_STR,
 	];
 
 	/**
@@ -99,7 +95,10 @@ class DBMysql extends Config implements DBInterface
 				"mysql:dbname={$database};host={$server}",
 				$this['user'],
 				$this['password'],
-				[PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT, PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"]
+				[
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
+					PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}",
+				]
 			);
 		} catch (PDOException $ex) {
 			throw new DatabaseConnectException($ex->getCode());
@@ -135,7 +134,10 @@ class DBMysql extends Config implements DBInterface
 		$this->processStatement($query, $params);
 		$results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
 		if ($results === false) {
-			throw new DatabaseStatementException(join(';', $this->statement->errorInfo()), $query);
+			throw new DatabaseStatementException(
+				join(';', $this->statement->errorInfo()),
+				$query
+			);
 		}
 		return $results;
 	}
@@ -174,7 +176,10 @@ class DBMysql extends Config implements DBInterface
 		} else {
 			$this->statement = $this->connection->query($query);
 			if ($this->statement === false) {
-				throw new DatabaseStatementException(join(';', $this->connection->errorInfo()), $query);
+				throw new DatabaseStatementException(
+					join(';', $this->connection->errorInfo()),
+					$query
+				);
 			}
 		}
 	}
@@ -190,7 +195,10 @@ class DBMysql extends Config implements DBInterface
 	{
 		$this->statement = $this->connection->prepare($query);
 		if ($this->statement === false) {
-			throw new DatabaseStatementException('Statement prepare error', $query);
+			throw new DatabaseStatementException(
+				'Statement prepare error',
+				$query
+			);
 		}
 	}
 
@@ -204,8 +212,17 @@ class DBMysql extends Config implements DBInterface
 	public function bindParams(Params $params)
 	{
 		foreach ($params as $key => $param) {
-			if (!$this->statement->bindValue(($key + 1), $param->value, $this->dictionary[$param->attr])) {
-				throw new DatabaseStatementException(join(';', $this->statement->errorInfo()), end($this->queries));
+			if (
+				!$this->statement->bindValue(
+					$key + 1,
+					$param->value,
+					$this->dictionary[$param->attr]
+				)
+			) {
+				throw new DatabaseStatementException(
+					join(';', $this->statement->errorInfo()),
+					end($this->queries)
+				);
 			}
 		}
 	}
@@ -219,7 +236,10 @@ class DBMysql extends Config implements DBInterface
 	public function executeStatement()
 	{
 		if (!$this->statement->execute()) {
-			throw new DatabaseStatementException(join(';', $this->statement->errorInfo()), end($this->queries));
+			throw new DatabaseStatementException(
+				join(';', $this->statement->errorInfo()),
+				end($this->queries)
+			);
 		}
 	}
 

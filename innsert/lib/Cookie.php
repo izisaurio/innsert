@@ -92,7 +92,7 @@ class Cookie extends Forable
 		if (isset($_COOKIE[$name])) {
 			$this->exists = true;
 			$this->values = json_decode($_COOKIE[$name]);
-			$this->_items = (array)$this->values;
+			$this->_items = (array) $this->values;
 		}
 		$this->name = $name;
 	}
@@ -109,15 +109,24 @@ class Cookie extends Forable
 	public function set($key, $value = null, $expire = null)
 	{
 		if (!isset($this->secure)) {
-			$this->secure = Request::defaultInstance()->server('HTTPS', 'off') === 'on';
+			$this->secure =
+				Request::defaultInstance()->server('HTTPS', 'off') === 'on';
 		}
 		if (!isset($expire)) {
 			$expire = $this->expire;
 		}
 		$toSet = is_array($key) ? $key : [$key => $value];
-		$this->_items = (array)$toSet;
+		$this->_items = (array) $toSet;
 		$this->values = $this->_items;
 		$cookie = json_encode($toSet);
-		return setcookie($this->name, $cookie, $expire, $this->path, $this->domain, $this->secure, $this->httpOnly);
+		return setcookie(
+			$this->name,
+			$cookie,
+			$expire,
+			$this->path,
+			$this->domain,
+			$this->secure,
+			$this->httpOnly
+		);
 	}
 }
