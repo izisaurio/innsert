@@ -1,7 +1,8 @@
 {
-  "name": "izisaurio/innsert-framework",
-  "description": "PHP MVC project template",
-  "type": "template",
+  "name": "izisaurio/innsert",
+  "description": "PHP MVC framework",
+  "keywords": ["framework"],
+  "type": "project",
   "license": "MIT",
   "authors": [
     {
