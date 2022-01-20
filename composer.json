@@ -1,11 +1,13 @@
 {
   "name": "izisaurio/innsert-framework",
-  "description": "PHP MVC Framework",
-  "type": "project",
+  "description": "PHP MVC project template",
+  "type": "template",
+  "license": "MIT",
   "authors": [
     {
       "name": "isaac",
-      "email": "izi.isaac@gmail.com"
+      "email": "izi.isaac@gmail.com",
+      "role": "Developer"
     }
   ],
   "autoload": {

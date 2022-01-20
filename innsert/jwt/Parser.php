@@ -67,7 +67,7 @@ class Parser
 	/**
 	 * Constructor
 	 *
-	 * Recibe y decodifica el jwt
+	 * Gets and decodes the jwt
 	 *
 	 * @access	public
 	 * @param	string	$secret		Hash secret
