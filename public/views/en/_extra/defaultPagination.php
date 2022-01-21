@@ -1,32 +1,17 @@
-<ul class="pagination right">
+<div>
+	<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" style="display: inline-block; width: 75px;">
+		<?php for ($i = 1; $i <= $pagination->totalPages; $i++): ?>
 
-	<?php $firstPageAttrs = ($pagination->index == 1) ? ['class' => 'dis'] : []; ?>
+			<?php if ($pagination->index == $i): ?>
+				<option selected="selected">
+					<?php echo $i ?>
+				</option>
+			<?php else: ?>
+				<option <?php echo attrs(['value' => url($pagination->urlBase, $i)->params($pagination->urlParams)]) ?>>
+					<?php echo $i ?>
+				</option>
+			<?php endif ?>
 
-	<li>
-		<?php echo a(
-			'<i class="fa fa-angle-double-left"></i>',
-			url($pagination->urlBase)->add(1)->params($pagination->urlParams)->make(),
-			($pagination->index == 1 ? ['class' => 'dis'] : [])
-		) ?>
-	</li>
-
-	<?php foreach (range(
-		max(1, $pagination->index - 3),
-		min($pagination->totalPages, $pagination->index + 3)
-	) as $page) : ?>
-
-		<li <?php echo attrs(($page == $pagination->index ? ['class' => 'act'] : [])) ?>>
-			<?php echo a($page, url($pagination->urlBase)->add($page)->params($pagination->urlParams)->make()) ?>
-		</li>
-
-	<?php endforeach; ?>
-
-	<li>
-		<?php echo a(
-			'<i class="fa fa-angle-double-right"></i>',
-			url($pagination->urlBase)->add($pagination->totalPages)->params($pagination->urlParams)->make(),
-			($pagination->index == $pagination->totalPages ? ['class' => 'dis'] : [])
-		) ?>
-	</li>
-
-</ul>
+		<?php endfor ?>
+	</select>
+</div>
