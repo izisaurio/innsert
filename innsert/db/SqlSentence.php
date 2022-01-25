@@ -158,6 +158,10 @@ class SqlSentence
 				$this->select[] = "({$column->buildSelect()}) AS {$column->alias}";
 				continue;
 			}
+			if ($column instanceof SqlCases) {
+				$this->select[] = $column->build($this);
+				continue;
+			}
 			$this->select[] = is_array($column)
 				? $column[0]
 				: $this->prepareColumn($column);
@@ -920,11 +924,11 @@ class SqlSentence
 	/**
 	 * Cleans query values
 	 *
-	 * @access	protected
+	 * @access	public
 	 * @param	mixed		$value		Value(s) to clean
 	 * @return	mixed
 	 */
-	protected function quote($value)
+	public function quote($value)
 	{
 		return is_array($value)
 			? array_map([$this, 'clean'], $value)
@@ -934,11 +938,11 @@ class SqlSentence
 	/**
 	 * Cleans query values
 	 *
-	 * @access	protected
+	 * @access	public
 	 * @param	mixed	$value		Value to clean
 	 * @return	mixed
 	 */
-	protected function clean($value)
+	public function clean($value)
 	{
 		return !is_numeric($value) && $value !== '?'
 			? addslashes($value)
@@ -956,28 +960,5 @@ class SqlSentence
 		$self = new self();
 		$self->table = $this->table;
 		return $self;
-	}
-
-	/**
-	 * Returns the string with a case when format
-	 *
-	 * @access	public
-	 * @param	string	$field		Select field to be compared
-	 * @param	array	$cases		Keys are cases, values are selected text
-	 * @param	string	$as			Select alias
-	 * @param	string	$else		Else de los cases
-	 * @return	string
-	 */
-	public function cases($field, array $cases, $as, $else = null)
-	{
-		$builder = [];
-		foreach ($cases as $key => $value) {
-			$builder[] =
-				'WHEN ' . $this->clean($key) . ' THEN ' . $this->clean($value);
-		}
-		if (isset($else)) {
-			$builder[] = 'ELSE ' . $this->clean($else);
-		}
-		return 'CASE ' . $field . ' ' . join(' ', $builder) . ' END AS ' . $as;
 	}
 }

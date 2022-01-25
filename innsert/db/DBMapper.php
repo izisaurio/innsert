@@ -350,10 +350,13 @@ abstract class DBMapper extends SqlSentence
 	}
 
 	/**
-	 * To abstract (returns current mapper model)
+	 * Returns current mapper model, generic DBModel by default
 	 *
 	 * @access	public
 	 * @return	DBModel
 	 */
-	abstract public function getModel();
+	public function getModel()
+	{
+		return new DBModel($this);
+	}
 }
