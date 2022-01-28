@@ -67,7 +67,7 @@ class View
 	public function __construct(array $path, array $items = [])
 	{
 		$this->fullPath =
-			join(DS, array_merge(['public', 'views'], $path)) . EXT;
+			DIRECTORY . join(DS, array_merge(['public', 'views'], $path)) . EXT;
 		if (!file_exists($this->fullPath)) {
 			throw new TemplateNotFoundException($this->fullPath);
 		}

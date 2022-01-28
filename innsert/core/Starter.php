@@ -5,8 +5,7 @@ namespace innsert\core;
 use innsert\lib\Request,
 	innsert\resp\Response,
 	innsert\resp\ErrorResponse,
-	innsert\resp\EmptyResponse,
-	\Exception;
+	innsert\resp\EmptyResponse;
 
 /**
  * Innsert PHP MVC Framework
@@ -56,20 +55,21 @@ class Starter
 	 *
 	 * Sets values from config file
 	 *
-	 * @param	string	$file	Starter file
+	 * @param	string	$file	Root file
+	 * @param	string	$ds		Character for directory separator
 	 * @access	public
 	 */
-	public function __construct($file)
+	public function __construct($file, $ds = DIRECTORY_SEPARATOR)
 	{
-		$this->request = Request::defaultInstance();
 		define('US', '/');
+		define('DS', $ds);
+		define('DIRECTORY', dirname($file));
+		$this->request = Request::defaultInstance();
 		$this->setStarterFilePath($file);
 		$this->defaultConfigs = Defaults::defaultInstance();
-		define('DS', $this->defaultConfigs['ds']);
 		$this->setEnvironmentValues();
 		$this->router = new Router($this->request);
 		$this->request->router = $this->router;
-		Loader::file(['app', 'configs', 'functions']);
 	}
 
 	/**
@@ -83,11 +83,11 @@ class Starter
 		$attrs = pathinfo($file);
 		define('EXT', '.' . $attrs['extension']);
 		define('SCRIPT', $attrs['basename']);
-		$directory = dirname(
-			substr($file, strlen($this->request->server('DOCUMENT_ROOT')))
+		$directory = substr(
+			DIRECTORY,
+			strlen($this->request->server('DOCUMENT_ROOT'))
 		);
-		$path =
-			$directory === '/' ? US : str_replace('\\', US, $directory) . US;
+		$path = $directory === DS ? US : str_replace('\\', US, $directory) . US;
 		define('PATH', $path);
 	}
 

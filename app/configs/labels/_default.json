@@ -1,0 +1,38 @@
+{
+	"error": {
+		"es": "Error inesperado, intente de nuevo",
+		"en": "Unexpected error, try again"
+	},
+	"success": {
+		"es": "Registro guardado correctamente",
+		"en": "The data was saved successfully"
+	},
+	"login_failed": {
+		"es": "Nombre de usuario y/o contraseña incorrectos",
+		"en": "Incorrect username and/or password"
+	},
+	"wrong_current_pass": {
+		"es": "La contraseña actual no es correcta",
+		"en": "Wrong current password"
+	},
+	"pass_do_not_match": {
+		"es": "Las contraseñas no coinciden",
+		"en": "Passwords do not match"
+	},
+	"email_in_use": {
+		"es": "El correo ya ha sido registrado",
+		"en": "Email already used"
+	},
+	"file_not_found": {
+		"es": "Archivo no encontrado",
+	"en": "File not found"
+	},
+	"active": {
+		"es": "Activa",
+		"en": "Active"
+	},
+	"inactive": {
+		"es": "Inactiva",
+		"en": "Inactive"
+	}
+}

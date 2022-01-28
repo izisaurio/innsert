@@ -1,0 +1,42 @@
+{
+	"1": {
+		"es": "%s: El archivo excedió el tamaño máximo permitido en el servidor",
+		"en": "%s: The file exceeded the maximum size allowed by the server"
+	},
+	"2": {
+		"es": "%s: El archivo excedió el tamaño máximo permitido",
+		"en": "%s: The file exceeded the maximum size allowed"
+	},
+	"3": {
+		"es": "%s: El archivo no se subió correctamente",
+		"en": "%s: The file failed to upload"
+	},
+	"4": {
+		"es": "No se seleccionó un archivo para subir",
+		"en": "Not file to upload selected"
+	},
+	"6": {
+		"es": "%s: Error inesperado, intente subir el archivo de nuevo",
+		"en": "%s: Unexpected error, please try again"
+	},
+	"7": {
+		"es": "%s: Error inesperado, intente subir el archivo de nuevo",
+		"en": "%s: Unexpected error, please try again"
+	},
+	"8": {
+		"es": "%s: Error inesperado, intente subir el archivo de nuevo",
+		"en": "%s: Unexpected error, please try again"
+	},
+	"mimes": {
+		"es": "%s: El archivo es de un tipo no permitido",
+		"en": "%s: The file is of a not allowed type"
+	},
+	"save": {
+		"es": "%s: Error inesperado, intente subir el archivo de nuevo",
+		"en": "%s: Unexpected error, please try again"
+	},
+	"replace": {
+		"es": "%s: El archivo ya existe",
+		"en": "%s: The file already exists"
+	}
+}

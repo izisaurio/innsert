@@ -25,7 +25,7 @@ class Log
 	 */
 	public static function add($fileName, $message)
 	{
-		$file = 'app' . DS . 'logs' . DS . $fileName . '.log';
+		$file = DIRECTORY . DS . 'app' . DS . 'logs' . DS . $fileName . '.log';
 		if (!file_exists($file)) {
 			throw new LogFileNotFoundException($file);
 		}

@@ -51,15 +51,11 @@ class Url
 	 * Sets base url
 	 *
 	 * @access	public
-	 * @param	mixed	$parts[]	Url parts
+	 * @param	array	$parts[]	Url parts
 	 */
-	public function __construct($parts = null)
+	public function __construct(array $parts = array())
 	{
-		if (!isset($parts)) {
-			$this->parts = [];
-		} else {
-			$this->parts = !is_array($parts) ? func_get_args() : $parts;
-		}
+		$this->parts = $parts;
 	}
 
 	/**

@@ -31,6 +31,8 @@ class LanguageView extends View
 			join(DS, array_merge(['public', 'views', $language], $path)) . EXT;
 		if (!file_exists($this->fullPath)) {
 			$this->fullPath =
+				DIRECTORY .
+				DS .
 				join(
 					DS,
 					array_merge(
@@ -41,7 +43,8 @@ class LanguageView extends View
 						],
 						$path
 					)
-				) . EXT;
+				) .
+				EXT;
 			if (!file_exists($this->fullPath)) {
 				throw new TemplateNotFoundException($this->fullPath);
 			}

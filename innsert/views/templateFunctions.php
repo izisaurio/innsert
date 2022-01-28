@@ -1,10 +1,11 @@
 <?php
 
 use innsert\lib\Request,
-	innsert\lib\DatePlus,
-	innsert\lang\Lang,
-	innsert\sess\Sess,
-	innsert\lib\StringFunctions;
+    innsert\lib\Url,
+    innsert\lib\DatePlus,
+    innsert\lang\Lang,
+    innsert\sess\Sess,
+    innsert\lib\StringFunctions;
 
 /**
  * Innsert PHP MVC Framework
@@ -24,11 +25,22 @@ use innsert\lib\Request,
  */
 function attrs(array $attrs)
 {
-	$list = '';
-	foreach ($attrs as $name => $value) {
-		$list .= is_int($name) ? "{$value} " : $name . '="' . $value . '" ';
-	}
-	return $list;
+    $list = '';
+    foreach ($attrs as $name => $value) {
+        $list .= is_int($name) ? "{$value} " : $name . '="' . $value . '" ';
+    }
+    return $list;
+}
+
+/**
+ * Returns a new Url builder
+ *
+ * @param   array  $parts   Url parts
+ * @return  Url
+ */
+function url(array $parts = [])
+{
+    return new Url($parts);
 }
 
 /**
@@ -39,7 +51,7 @@ function attrs(array $attrs)
  */
 function e($data)
 {
-	return htmlspecialchars($data);
+    return htmlspecialchars($data);
 }
 
 /**
@@ -50,7 +62,7 @@ function e($data)
  */
 function datePlus($date = null)
 {
-	return isset($date) ? DatePlus::fromDB($date) : new DatePlus();
+    return isset($date) ? DatePlus::fromDB($date) : new DatePlus();
 }
 
 /**
@@ -60,7 +72,7 @@ function datePlus($date = null)
  */
 function session()
 {
-	return Sess::defaultInstance();
+    return Sess::defaultInstance();
 }
 
 /**
@@ -72,7 +84,7 @@ function session()
  */
 function lang($message, array $params = [])
 {
-	return Lang::defaultInstance()->get($message, $params);
+    return Lang::defaultInstance()->get($message, $params);
 }
 
 /**
@@ -84,7 +96,7 @@ function lang($message, array $params = [])
  */
 function get($key, $default = null)
 {
-	return Request::defaultInstance()->get($key, $default);
+    return Request::defaultInstance()->get($key, $default);
 }
 
 /**
@@ -97,11 +109,11 @@ function get($key, $default = null)
  */
 function getArray($key, $index, $default = null)
 {
-	$get = Request::defaultInstance()->get($key);
-	if (!isset($get)) {
-		return $default;
-	}
-	return isset($get[$index]) ? $get[$index] : $default;
+    $get = Request::defaultInstance()->get($key);
+    if (!isset($get)) {
+        return $default;
+    }
+    return isset($get[$index]) ? $get[$index] : $default;
 }
 
 /**
@@ -113,7 +125,7 @@ function getArray($key, $index, $default = null)
  */
 function post($key, $default = null)
 {
-	return Request::defaultInstance()->post($key, $default);
+    return Request::defaultInstance()->post($key, $default);
 }
 
 /**
@@ -126,11 +138,11 @@ function post($key, $default = null)
  */
 function postArray($key, $index, $default = null)
 {
-	$post = Request::defaultInstance()->post($key);
-	if (!isset($post)) {
-		return $default;
-	}
-	return isset($post[$index]) ? $post[$index] : $default;
+    $post = Request::defaultInstance()->post($key);
+    if (!isset($post)) {
+        return $default;
+    }
+    return isset($post[$index]) ? $post[$index] : $default;
 }
 
 /**
@@ -143,7 +155,7 @@ function postArray($key, $index, $default = null)
  */
 function a($text, $url, array $attrs = [])
 {
-	return '<a href="' . $url . '" ' . attrs($attrs) . '>' . $text . '</a>';
+    return '<a href="' . $url . '" ' . attrs($attrs) . '>' . $text . '</a>';
 }
 
 /**
@@ -155,7 +167,7 @@ function a($text, $url, array $attrs = [])
  */
 function img($url, array $attrs = [])
 {
-	return '<img src="' . $url . '" ' . attrs($attrs) . ' />';
+    return '<img src="' . $url . '" ' . attrs($attrs) . ' />';
 }
 
 /**
@@ -169,14 +181,14 @@ function img($url, array $attrs = [])
  */
 function input($type, $name, $value = null, array $attrs = [])
 {
-	return '<input type="' .
-		$type .
-		'" name="' .
-		$name .
-		'" ' .
-		(isset($value) ? 'value="' . $value . '" ' : '') .
-		attrs($attrs) .
-		'/>';
+    return '<input type="' .
+        $type .
+        '" name="' .
+        $name .
+        '" ' .
+        (isset($value) ? 'value="' . $value . '" ' : '') .
+        attrs($attrs) .
+        '/>';
 }
 
 /**
@@ -189,7 +201,7 @@ function input($type, $name, $value = null, array $attrs = [])
  */
 function text($name, $value = null, array $attrs = [])
 {
-	return input('text', $name, $value, $attrs);
+    return input('text', $name, $value, $attrs);
 }
 
 /**
@@ -202,7 +214,7 @@ function text($name, $value = null, array $attrs = [])
  */
 function email($name, $value = null, array $attrs = [])
 {
-	return input('email', $name, $value, $attrs);
+    return input('email', $name, $value, $attrs);
 }
 
 /**
@@ -215,7 +227,7 @@ function email($name, $value = null, array $attrs = [])
  */
 function password($name, $value = null, array $attrs = [])
 {
-	return input('password', $name, $value, $attrs);
+    return input('password', $name, $value, $attrs);
 }
 
 /**
@@ -228,7 +240,7 @@ function password($name, $value = null, array $attrs = [])
  */
 function number($name, $value = null, array $attrs = [])
 {
-	return input('number', $name, $value, $attrs);
+    return input('number', $name, $value, $attrs);
 }
 
 /**
@@ -240,10 +252,10 @@ function number($name, $value = null, array $attrs = [])
  */
 function csrf($name = 'token', array $attrs = [])
 {
-	$token = StringFunctions::uniqueString();
-	$session = Sess::defaultInstance();
-	$session[$name] = $token;
-	return input('hidden', $name, $token, $attrs);
+    $token = StringFunctions::uniqueString();
+    $session = Sess::defaultInstance();
+    $session[$name] = $token;
+    return input('hidden', $name, $token, $attrs);
 }
 
 /**
@@ -256,13 +268,13 @@ function csrf($name = 'token', array $attrs = [])
  */
 function textarea($name, $value = '', array $attrs = [])
 {
-	return '<textarea name="' .
-		$name .
-		'" ' .
-		attrs($attrs) .
-		'>' .
-		$value .
-		'</textarea>';
+    return '<textarea name="' .
+        $name .
+        '" ' .
+        attrs($attrs) .
+        '>' .
+        $value .
+        '</textarea>';
 }
 
 /**
@@ -275,26 +287,26 @@ function textarea($name, $value = '', array $attrs = [])
  * @param   array   $attrs          Attributes to write in select
  */
 function select(
-	$name,
-	$options,
-	$default = null,
-	$placeholder = null,
-	array $attrs = []
+    $name,
+    $options,
+    $default = null,
+    $placeholder = null,
+    array $attrs = []
 ) {
-	$attrs['name'] = $name;
-	if (isset($default) && !is_array($default)) {
-		$default = [$default];
-	}
-	$select = '<select ' . attrs($attrs) . '>';
-	if (isset($placeholder)) {
-		$select .= "<option value='' class='select-default'>{$placeholder}</option>";
-	}
-	foreach ($options as $key => $option) {
-		$selected =
-			isset($default) && in_array($key, $default) ? ' selected' : '';
-		$select .= "<option value='{$key}'{$selected}>{$option}</option>";
-	}
-	return "{$select}</select>";
+    $attrs['name'] = $name;
+    if (isset($default) && !is_array($default)) {
+        $default = [$default];
+    }
+    $select = '<select ' . attrs($attrs) . '>';
+    if (isset($placeholder)) {
+        $select .= "<option value='' class='select-default'>{$placeholder}</option>";
+    }
+    foreach ($options as $key => $option) {
+        $selected =
+            isset($default) && in_array($key, $default) ? ' selected' : '';
+        $select .= "<option value='{$key}'{$selected}>{$option}</option>";
+    }
+    return "{$select}</select>";
 }
 
 /**
@@ -309,16 +321,16 @@ function select(
  * @return  string
  */
 function selectWithLabelsArray(
-	$name,
-	$options,
-	array $labels,
-	$default = null,
-	$placeholder = null,
-	array $attrs = []
+    $name,
+    $options,
+    array $labels,
+    $default = null,
+    $placeholder = null,
+    array $attrs = []
 ) {
-	$results = [];
-	foreach ($options as $key => $value) {
-		$results[$key] = $labels[$value];
-	}
-	return select($name, $results, $default, $placeholder, $attrs);
+    $results = [];
+    foreach ($options as $key => $value) {
+        $results[$key] = $labels[$value];
+    }
+    return select($name, $results, $default, $placeholder, $attrs);
 }

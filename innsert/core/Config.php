@@ -27,14 +27,10 @@ abstract class Config extends ArrayLike
 	 * Requires the config file and sets it as an array of this class
 	 *
 	 * @access	public
-	 * @throws	ConfigFileNotFoundException
+	 * @throws	JsonFileNotFoundException|JsonParseException
 	 */
 	public function __construct()
 	{
-		$file = join(US, $this->_path) . EXT;
-		if (!file_exists($file)) {
-			throw new ConfigFileNotFoundException(get_class($this), $file);
-		}
-		$this->_items = require $file;
+		$this->_items = Loader::json($this->_path);
 	}
 }

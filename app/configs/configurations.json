@@ -1,0 +1,11 @@
+{
+	"domain": "http://localhost",
+	"rewrites": true,
+	"reporting": 32767,
+	"debug": true,
+	"timezone": "America/Monterrey",
+	"locale": "en-us",
+	"language": "en",
+	"languages": ["en", "es"],
+	"sessionCheckIP": false
+}

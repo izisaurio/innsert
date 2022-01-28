@@ -324,11 +324,11 @@ abstract class DBMapper extends SqlSentence
 	/**
 	 * Cleans query values with $db->clean()
 	 *
-	 * @access	protected
+	 * @access	public
 	 * @param	mixed	$value		Value to clean
 	 * @return	mixed
 	 */
-	protected function clean($value)
+	public function clean($value)
 	{
 		return !is_numeric($value) && $value !== '?'
 			? $this->db->clean($value)

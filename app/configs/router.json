@@ -1,0 +1,7 @@
+{
+    "/": "home/index",
+    "/login": "user/auth/login",
+    "/admin/:controller": "admin/:controller/index",
+    "/admin/:controller/:action": "admin/:controller/:action",
+    "/admin/:controller/:action/:id": "admin/:controller/:action/:id"
+}
